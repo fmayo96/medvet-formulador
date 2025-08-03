@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "types": ["../../types.d.ts"],
+    "types": ["../../types"],
     "strict": true,
     "target": "esnext",
     "module": "nodenext",

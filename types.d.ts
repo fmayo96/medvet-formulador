@@ -1,3 +1,7 @@
 interface Window {
-  electron: { hi: () => Promise<string> }
+  electron: { hi: (data) => Promise<string> }
+}
+
+type EventPayloadMapping = {
+  hi: string
 }

@@ -1,21 +1,21 @@
-import { useEffect, useState } from 'react'
+import { useState, useRef } from 'react'
 import './App.css'
 
 function App() {
-  const [msg, setMsg] = useState("")
-
-  useEffect(() => {
-    async function getMsg() {
-    const newMsg = await window.electron.hi()
+  const [msg, setMsg] = useState<string|null>(null)
+  const nameRef = useRef<HTMLInputElement>(null)
+  async function handleClick() {
+    if (nameRef.current === null) return
+    const newMsg = await window.electron.hi(nameRef.current.value)
     setMsg(newMsg)
   }
-  getMsg()
-},[])
 
   return (
     <>
     <h1>Medvet Formulador</h1>
-    <p>{msg}</p>
+    {msg && <h2>{msg}</h2>}
+    <input type="text" ref={nameRef} />
+    <button onClick={handleClick}>Submit</button>
     </>
   )
 }

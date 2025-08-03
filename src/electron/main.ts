@@ -1,6 +1,6 @@
-import { app, BrowserWindow, ipcMain } from "electron"
+import { app, BrowserWindow } from "electron"
 import { getPreloadPath, getUIPath } from "./path-resolver.js"
-import { isDev } from "./util.js"
+import { ipcMainHandle, isDev } from "./util.js"
 
 console.log(getPreloadPath())
 
@@ -16,5 +16,5 @@ app.on("ready", () => {
   } else {
     mainWindow.loadFile(getUIPath())
   }
-  ipcMain.handle("hi", () => "Hello from electron")
+  ipcMainHandle("hi", (data) => `Hi from ${data} Electron.js`)
 })
