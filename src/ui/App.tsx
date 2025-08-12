@@ -1,24 +1,30 @@
-import { useState, useRef } from 'react'
 import './App.css'
+import CreateProfile from './components/CreateProfile'
+import NavBar from './components/NavBar'
+import { useState } from 'react'
+import SavedProfiles from './components/SavedProfiles'
+import CreateRecipe from './components/CreateRecipe'
 
 function App() {
-  const [msg, setMsg] = useState<string|null>(null)
-  const nameRef = useRef<HTMLInputElement>(null)
-  async function handleClick() {
-    if (nameRef.current === null) return
-    const newMsg = await window.electron.hi(nameRef.current.value)
-    setMsg(newMsg)
+  type SelectedButton = 1 | 2 | 3
+  const [selectedButton, setSelectedButton] = useState<SelectedButton>(1)
+
+  function handleSelectButton(buttonId: SelectedButton) {
+    setSelectedButton(buttonId)
+  }
+
+  let content = <CreateProfile />
+  if (selectedButton === 2) {
+    content = <SavedProfiles />
+  } else if (selectedButton === 3) {
+    content = <CreateRecipe />
   }
 
   return (
-    <>
-    <h1>Medvet Formulador</h1>
-    {msg && <h2>{msg}</h2>}
-    <input type="text" ref={nameRef} />
-    <button onClick={handleClick}>Submit</button>
-    </>
+    <main className="flex h-screen w-screen gap-4">
+      <NavBar selectedButton={selectedButton} onSelect={handleSelectButton} />
+      {content}
+    </main>
   )
 }
-
 export default App
-  
