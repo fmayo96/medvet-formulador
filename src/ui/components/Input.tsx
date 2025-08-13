@@ -1,18 +1,14 @@
 type InputProps = {
-  type: 'text' | 'number' | 'checkbox' | 'select'
+  type: "text" | "number" | "checkbox"
   name: string
-  children?: React.ReactNode
-  value: any
+  value: string | number | boolean
   label: string
-  onChange: (
-    event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => void
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
 }
 
 export default function Input({
   type,
   name,
-  children,
   value,
   label,
   onChange,
@@ -22,7 +18,7 @@ export default function Input({
       type="text"
       name={name}
       id={name}
-      value={value}
+      value={value as string}
       onChange={onChange}
       autoComplete="off"
       className="border-slate-800 border-1 py-1 px-2 rounded-md focus:outline-none"
@@ -30,50 +26,41 @@ export default function Input({
   )
 
   switch (type) {
-    case 'number':
+    case "number":
       content = (
         <input
           type="text"
           name={name}
           id={name}
-          value={value}
+          value={value as number}
           onChange={onChange}
           autoComplete="off"
           className="border-slate-800 border-1 py-1 px-2 rounded-md focus:outline-none"
         />
       )
       break
-    case 'checkbox':
+    case "checkbox":
       content = (
         <input
           type="checkbox"
           name={name}
           id={name}
-          checked={value}
+          checked={value as boolean}
           onChange={onChange}
           className="w-5 h-5 accent-purple-500"
         />
-      )
-      break
-    case 'select':
-      content = (
-        <select
-          name={name}
-          id={name}
-          value={value}
-          onChange={onChange}
-          className="border-slate-800 border-1 py-1.5  px-2 rounded-md focus:outline-none"
-        >
-          {children}
-        </select>
       )
       break
     default:
       break
   }
 
+  let cssClasses = "flex flex-col gap-1"
+  if (type === "checkbox") {
+    cssClasses += " items-center mb-4"
+  }
   return (
-    <div className="flex flex-col gap-1">
+    <div className={cssClasses}>
       <label className="text-lg">{label}</label>
       {content}
     </div>
