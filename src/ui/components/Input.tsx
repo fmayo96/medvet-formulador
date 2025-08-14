@@ -1,5 +1,5 @@
 type InputProps = {
-  type: "text" | "number" | "checkbox"
+  type: 'text' | 'number' | 'checkbox'
   name: string
   value: string | number | boolean
   label: string
@@ -26,7 +26,7 @@ export default function Input({
   )
 
   switch (type) {
-    case "number":
+    case 'number':
       content = (
         <input
           type="text"
@@ -39,7 +39,7 @@ export default function Input({
         />
       )
       break
-    case "checkbox":
+    case 'checkbox':
       content = (
         <input
           type="checkbox"
@@ -55,9 +55,9 @@ export default function Input({
       break
   }
 
-  let cssClasses = "flex flex-col gap-1"
-  if (type === "checkbox") {
-    cssClasses += " items-center mb-4"
+  let cssClasses = 'flex flex-col gap-1'
+  if (type === 'checkbox') {
+    cssClasses += ' items-center mb-4'
   }
   return (
     <div className={cssClasses}>

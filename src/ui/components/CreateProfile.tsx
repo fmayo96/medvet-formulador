@@ -1,16 +1,16 @@
-import React, { useState } from "react"
-import Input from "./Input"
-import Select from "./Select"
+import React, { useState } from 'react'
+import Input from './Input'
+import Select from './Select'
 
 type Species =
-  | "Perro Adulto"
-  | "Gato Adulto"
-  | "Perro Cachorro"
-  | "Gato Cachorro"
-  | "Perra Preñada"
-  | "Gata Preñada"
-  | "Perra Lactancia"
-  | "Gata Lactancia"
+  | 'Perro Adulto'
+  | 'Gato Adulto'
+  | 'Perro Cachorro'
+  | 'Gato Cachorro'
+  | 'Perra Preñada'
+  | 'Gata Preñada'
+  | 'Perra Lactancia'
+  | 'Gata Lactancia'
 
 type FormData = {
   name: string
@@ -40,15 +40,15 @@ const reCachorro = /Cachorro/
 
 export default function CreateProfile() {
   const [formData, setFormData] = useState<FormData>({
-    name: "",
+    name: '',
     age: 0,
     weight: 0,
-    species: "Perro Adulto",
+    species: 'Perro Adulto',
     numCachorros: 0,
     lactancyWeek: 1,
     hasBlackFurr: false,
     isCatOverweight: false,
-    estimatedEnergyFactor: 0, // This is calculated
+    estimatedEnergyFactor: 0,
     isIdealWeight: false,
     idealWeight: 0,
     useRecommendedCaloricIntake: true, // true for calculated value
@@ -58,12 +58,13 @@ export default function CreateProfile() {
     fat: 0,
     carbohydrate: 0,
     preferredFiber: 0,
-    otherNotes: "",
+    otherNotes: '',
   })
 
   function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target
-    if (typeof value !== typeof formData[name as keyof FormData]) return
+    console.log(name)
+    console.log(typeof formData[name as keyof FormData])
     setFormData((prev) => ({
       ...prev,
       [name]: value,
@@ -92,7 +93,7 @@ export default function CreateProfile() {
       <hr className="border-slate-300 border-1 w-full" />
       <form
         className="flex flex-col w-full overflow-auto"
-        style={{ scrollbarWidth: "none" }}
+        style={{ scrollbarWidth: 'none' }}
       >
         <h2 className="text-xl my-8 self-center font-medium">
           Datos del Animal
@@ -129,7 +130,7 @@ export default function CreateProfile() {
           />
           <Input
             label={
-              reCachorro.test(formData.species) ? "Edad (Meses)" : "Edad (Años)"
+              reCachorro.test(formData.species) ? 'Edad (Meses)' : 'Edad (Años)'
             }
             name="age"
             value={formData.age}
@@ -232,7 +233,7 @@ export default function CreateProfile() {
             )}
           </div>
           {reGato.test(formData.species) ? (
-            <div className="flex flex-col gap-2 bg-[ #9795b7] border-1 border-purple-700 rounded-md p-4 mt-4">
+            <div className="flex flex-col gap-2 bg-purple-50 border-1 border-purple-700 rounded-md p-4 mt-4">
               <h3 className="font-medium text-purple-700">
                 Factor de Energía Estimado: Gatos
               </h3>
@@ -241,7 +242,7 @@ export default function CreateProfile() {
                 para subir o bajar.
               </p>
               <p className="text-purple-700 text-sm">
-                {"<"}55: Sedentario. Si tiene sobrepeso marcar la checkbox
+                {'<'}55: Sedentario. Si tiene sobrepeso marcar la checkbox
                 arriba.
               </p>
               <p className="text-purple-700 text-sm">
@@ -253,7 +254,7 @@ export default function CreateProfile() {
                 exóticas.
               </p>
               <p className="text-purple-700 text-sm">
-                {">"}100: Gatos muy activos o razas exóticas. Usualmente los
+                {'>'}100: Gatos muy activos o razas exóticas. Usualmente los
                 gatos de exterior o de granero.
               </p>
               <p className="text-purple-700 text-sm">
@@ -262,7 +263,7 @@ export default function CreateProfile() {
               </p>
             </div>
           ) : (
-            <div className="flex flex-col gap-2 bg-[ #9795b7]  border-1 border-purple-700 rounded-md p-4 mt-4">
+            <div className="flex flex-col gap-2 bg-purple-50  border-1 border-purple-700 rounded-md p-4 mt-4">
               <h3 className="font-medium text-purple-700">
                 Factor de Energía Estimado: Perros
               </h3>
@@ -271,7 +272,7 @@ export default function CreateProfile() {
                 para subir o bajar.
               </p>
               <p className="text-purple-700 text-sm">
-                {"<"}80: Sedentario. Pueden ser también perros mayores o perros
+                {'<'}80: Sedentario. Pueden ser también perros mayores o perros
                 activos con metabolismo bajo.
               </p>
               <p className="text-purple-700 text-sm">
@@ -287,8 +288,8 @@ export default function CreateProfile() {
                 on están castrados.
               </p>
               <p className="text-purple-700 text-sm">
-                {" "}
-                {">"}130: Perros muy activos (trabajo o deporte en ambientes
+                {' '}
+                {'>'}130: Perros muy activos (trabajo o deporte en ambientes
                 fríos). No muy común.
               </p>
             </div>
