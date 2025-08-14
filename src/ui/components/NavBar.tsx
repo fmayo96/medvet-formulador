@@ -27,6 +27,7 @@ export default function NavBar({ selectedButton, onSelect }: NavBarProps) {
         <hr className="border-slate-200 mx-4 " />
         {pages.map((p) => (
           <NavButton
+            key={p.id}
             onSelect={onSelect}
             name={p.name}
             isSelected={p.id === selectedButton}

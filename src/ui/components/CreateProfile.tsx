@@ -61,13 +61,21 @@ export default function CreateProfile() {
     otherNotes: '',
   })
 
-  function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
+  function handleTextChange(event: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target
-    console.log(name)
-    console.log(typeof formData[name as keyof FormData])
     setFormData((prev) => ({
       ...prev,
       [name]: value,
+    }))
+  }
+
+  function handleNumChange(event: React.ChangeEvent<HTMLInputElement>) {
+    const { name, value } = event.target
+    const numValue = Number(value)
+    if (Number.isNaN(numValue)) return
+    setFormData((prev) => ({
+      ...prev,
+      [name]: numValue,
     }))
   }
 
@@ -104,7 +112,7 @@ export default function CreateProfile() {
             label="Nombre"
             name="name"
             value={formData.name}
-            onChange={handleChange}
+            onChange={handleTextChange}
           />
           <Select
             label="El Animal es"
@@ -126,7 +134,7 @@ export default function CreateProfile() {
             name="weight"
             value={formData.weight}
             type="number"
-            onChange={handleChange}
+            onChange={handleNumChange}
           />
           <Input
             label={
@@ -135,7 +143,7 @@ export default function CreateProfile() {
             name="age"
             value={formData.age}
             type="number"
-            onChange={handleChange}
+            onChange={handleNumChange}
           />
           <Input
             label="Tiene Pelo Negro"
@@ -159,7 +167,7 @@ export default function CreateProfile() {
               label="Cantidad de Cachorros"
               name="numCachorros"
               value={formData.numCachorros}
-              onChange={handleChange}
+              onChange={handleNumChange}
             />
           ) : (
             <p></p>
@@ -191,7 +199,7 @@ export default function CreateProfile() {
               type="number"
               name="estimatedEnergyFactor"
               value={formData.estimatedEnergyFactor}
-              onChange={handleChange}
+              onChange={handleNumChange}
             />
             <Input
               label="Está en su Peso Ideal?"
@@ -205,7 +213,7 @@ export default function CreateProfile() {
               type="text"
               name="idealWeight"
               value={formData.idealWeight}
-              onChange={handleChange}
+              onChange={handleNumChange}
             />
             <div className="flex flex-col gap-1">
               <label className="text-lg">
@@ -228,7 +236,7 @@ export default function CreateProfile() {
                 type="number"
                 name="customCaloricIntake"
                 value={formData.customCaloricIntake}
-                onChange={handleChange}
+                onChange={handleNumChange}
               />
             )}
           </div>
