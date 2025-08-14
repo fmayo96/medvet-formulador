@@ -14,7 +14,7 @@ export default function NavButton({
   onSelect,
 }: NavButtonProps) {
   let cssClasses =
-    'my-2 text-lg hover:bg-slate-200 w-80 rounded-md py-2 hover:cursor-pointer '
+    'my-2 text-lg hover:bg-slate-200 w-7/8 rounded-md py-2 hover:cursor-pointer '
   if (isSelected) {
     cssClasses += 'bg-slate-100'
   }
