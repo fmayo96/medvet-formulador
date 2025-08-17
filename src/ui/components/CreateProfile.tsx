@@ -1,49 +1,19 @@
-import React, { useState } from 'react'
-import Input from './Input'
-import Select from './Select'
+import { useState, useRef } from "react";
+import type { ChangeEvent } from "react";
+import Input from "./Input";
+import Select from "./Select";
 
-type Species =
-  | 'Perro Adulto'
-  | 'Gato Adulto'
-  | 'Perro Cachorro'
-  | 'Gato Cachorro'
-  | 'Perra Preñada'
-  | 'Gata Preñada'
-  | 'Perra Lactancia'
-  | 'Gata Lactancia'
-
-type FormData = {
-  name: string
-  age: number
-  weight: number
-  species: Species
-  numCachorros: number
-  lactancyWeek: 1 | 2 | 3 | 4
-  hasBlackFurr: boolean
-  isCatOverweight: boolean
-  estimatedEnergyFactor: number
-  isIdealWeight: boolean
-  idealWeight: number
-  useRecommendedCaloricIntake: boolean // true for calculated value
-  recommendedCaloricIntake: number // use this if useRecommendedCaloricIntake === false
-  customCaloricIntake: number
-  protein: number // percentage
-  fat: number // percentage
-  carbohydrate: number // percentage
-  preferredFiber: number //percentage
-  otherNotes: string
-}
-
-const reGato = /Gat/
-const reLact = /Lactancia/
-const reCachorro = /Cachorro/
+const reGato = /Gat/;
+const reLact = /Lactancia/;
+const reCachorro = /Cachorro/;
 
 export default function CreateProfile() {
-  const [formData, setFormData] = useState<FormData>({
-    name: '',
+  const [petData, setPetData] = useState<PetData>({
+    name: "",
+    photo: null,
     age: 0,
     weight: 0,
-    species: 'Perro Adulto',
+    species: "Perro Adulto",
     numCachorros: 0,
     lactancyWeek: 1,
     hasBlackFurr: false,
@@ -54,45 +24,60 @@ export default function CreateProfile() {
     useRecommendedCaloricIntake: true, // true for calculated value
     recommendedCaloricIntake: 0, // use this if useRecommendedCaloricIntake === false
     customCaloricIntake: 0,
-    protein: 0, // percentage
-    fat: 0,
-    carbohydrate: 0,
-    preferredFiber: 0,
-    otherNotes: '',
-  })
+    otherNotes: "",
+  });
 
-  function handleTextChange(event: React.ChangeEvent<HTMLInputElement>) {
-    const { name, value } = event.target
-    setFormData((prev) => ({
+  function handleChange(event: ChangeEvent<HTMLInputElement>) {
+    const { name, value } = event.target;
+    setPetData((prev) => ({
       ...prev,
       [name]: value,
-    }))
+    }));
   }
 
-  function handleNumChange(event: React.ChangeEvent<HTMLInputElement>) {
+
+  function handleCheckBoxChange(event: ChangeEvent<HTMLInputElement>) {
+    const { name, checked } = event.target;
+    setPetData((prev) => ({
+      ...prev,
+      [name]: checked,
+    }));
+  }
+
+      
+  function handleNumChange(event: ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target
     const numValue = Number(value)
     if (Number.isNaN(numValue)) return
-    setFormData((prev) => ({
+    setPetData((prev) => ({
       ...prev,
       [name]: numValue,
     }))
   }
 
-  function handleCheckBoxChange(event: React.ChangeEvent<HTMLInputElement>) {
-    const { name, checked } = event.target
-    setFormData((prev) => ({
-      ...prev,
-      [name]: checked,
-    }))
-  }
-
-  function handleSelectChange(event: React.ChangeEvent<HTMLSelectElement>) {
-    const { name, value } = event.target
-    setFormData((prev) => ({
+      
+  function handleSelectChange(event: ChangeEvent<HTMLSelectElement>) {
+    const { name, value } = event.target;
+    setPetData((prev) => ({
       ...prev,
       [name]: value,
-    }))
+    }));
+  }
+
+  function handleFileChange(event: ChangeEvent<HTMLInputElement>) {
+    if (event.target.files && event.target.files[0]) {
+      setPetData((prev) => ({
+        ...prev,
+        photo: event.target.files![0],
+      }));
+    }
+  }
+
+  const imageInputRef = useRef<HTMLInputElement>(null);
+
+  function handleImageClick(e: React.MouseEvent<HTMLButtonElement>) {
+    e.preventDefault();
+    imageInputRef.current?.click();
   }
 
   return (
@@ -101,7 +86,7 @@ export default function CreateProfile() {
       <hr className="border-slate-300 border-1 w-full" />
       <form
         className="flex flex-col w-full overflow-auto"
-        style={{ scrollbarWidth: 'none' }}
+        style={{ scrollbarWidth: "none" }}
       >
         <h2 className="text-xl my-8 self-center font-medium">
           Datos del Animal
@@ -111,13 +96,13 @@ export default function CreateProfile() {
             type="text"
             label="Nombre"
             name="name"
-            value={formData.name}
-            onChange={handleTextChange}
+            value={petData.name}
+            onChange={handleChange}
           />
           <Select
             label="El Animal es"
             name="species"
-            value={formData.species}
+            value={petData.species}
             onChange={handleSelectChange}
           >
             <option value="Perro Adulto">Perro Adulto</option>
@@ -132,16 +117,16 @@ export default function CreateProfile() {
           <Input
             label="Peso (Kg)"
             name="weight"
-            value={formData.weight}
+            value={petData.weight}
             type="number"
             onChange={handleNumChange}
           />
           <Input
             label={
-              reCachorro.test(formData.species) ? 'Edad (Meses)' : 'Edad (Años)'
+              reCachorro.test(petData.species) ? "Edad (Meses)" : "Edad (Años)"
             }
             name="age"
-            value={formData.age}
+            value={petData.age}
             type="number"
             onChange={handleNumChange}
           />
@@ -149,35 +134,35 @@ export default function CreateProfile() {
             label="Tiene Pelo Negro"
             type="checkbox"
             name="hasBlackFurr"
-            value={formData.hasBlackFurr}
+            value={petData.hasBlackFurr}
             onChange={handleCheckBoxChange}
           />
-          {reGato.test(formData.species) && (
+          {reGato.test(petData.species) && (
             <Input
               label="Gato con Sobrepeso"
               type="checkbox"
               name="isCatOverweight"
-              value={formData.isCatOverweight}
+              value={petData.isCatOverweight}
               onChange={handleCheckBoxChange}
             />
           )}
-          {reLact.test(formData.species) ? (
+          {reLact.test(petData.species) ? (
             <Input
               type="number"
               label="Cantidad de Cachorros"
               name="numCachorros"
-              value={formData.numCachorros}
-              onChange={handleNumChange}
+              value={petData.numCachorros}
+              onChange={handleChange}
             />
           ) : (
             <p></p>
           )}
 
-          {reLact.test(formData.species) ? (
+          {reLact.test(petData.species) ? (
             <Select
               label="Semana de Lactancia"
               name="lactancyWeek"
-              value={formData.lactancyWeek}
+              value={petData.lactancyWeek}
               onChange={handleSelectChange}
             >
               <option value={1}>1</option>
@@ -198,49 +183,49 @@ export default function CreateProfile() {
               label="Factor de Energía Estimado"
               type="number"
               name="estimatedEnergyFactor"
-              value={formData.estimatedEnergyFactor}
-              onChange={handleNumChange}
+              value={petData.estimatedEnergyFactor}
+              onChange={handleChange}
             />
             <Input
               label="Está en su Peso Ideal?"
               type="checkbox"
               name="isIdealWeight"
-              value={formData.isIdealWeight}
+              value={petData.isIdealWeight}
               onChange={handleCheckBoxChange}
             />
             <Input
               label="Peso Ideal (Kg)"
               type="text"
               name="idealWeight"
-              value={formData.idealWeight}
-              onChange={handleNumChange}
+              value={petData.idealWeight}
+              onChange={handleChange}
             />
             <div className="flex flex-col gap-1">
               <label className="text-lg">
                 Ingesta Calórica Recomendada (Kcal)
               </label>
               <p className="border-1 border-slate-800 py-1 px-2 rounded-md bg-slate-200">
-                {formData.recommendedCaloricIntake}
+                {petData.recommendedCaloricIntake}
               </p>
             </div>
             <Input
               label="Usar Ingesta Calórica Recomendada"
               type="checkbox"
               name="useRecommendedCaloricIntake"
-              value={formData.useRecommendedCaloricIntake}
+              value={petData.useRecommendedCaloricIntake}
               onChange={handleCheckBoxChange}
             />
-            {!formData.useRecommendedCaloricIntake && (
+            {!petData.useRecommendedCaloricIntake && (
               <Input
                 label="Ingesta Calórica Personalizada (Kcal)"
                 type="number"
                 name="customCaloricIntake"
-                value={formData.customCaloricIntake}
-                onChange={handleNumChange}
+                value={petData.customCaloricIntake}
+                onChange={handleChange}
               />
             )}
           </div>
-          {reGato.test(formData.species) ? (
+          {reGato.test(petData.species) ? (
             <div className="flex flex-col gap-2 bg-purple-50 border-1 border-purple-700 rounded-md p-4 mt-4">
               <h3 className="font-medium text-purple-700">
                 Factor de Energía Estimado: Gatos
@@ -250,7 +235,7 @@ export default function CreateProfile() {
                 para subir o bajar.
               </p>
               <p className="text-purple-700 text-sm">
-                {'<'}55: Sedentario. Si tiene sobrepeso marcar la checkbox
+                {"<"}55: Sedentario. Si tiene sobrepeso marcar la checkbox
                 arriba.
               </p>
               <p className="text-purple-700 text-sm">
@@ -262,7 +247,7 @@ export default function CreateProfile() {
                 exóticas.
               </p>
               <p className="text-purple-700 text-sm">
-                {'>'}100: Gatos muy activos o razas exóticas. Usualmente los
+                {">"}100: Gatos muy activos o razas exóticas. Usualmente los
                 gatos de exterior o de granero.
               </p>
               <p className="text-purple-700 text-sm">
@@ -280,7 +265,7 @@ export default function CreateProfile() {
                 para subir o bajar.
               </p>
               <p className="text-purple-700 text-sm">
-                {'<'}80: Sedentario. Pueden ser también perros mayores o perros
+                {"<"}80: Sedentario. Pueden ser también perros mayores o perros
                 activos con metabolismo bajo.
               </p>
               <p className="text-purple-700 text-sm">
@@ -296,14 +281,32 @@ export default function CreateProfile() {
                 on están castrados.
               </p>
               <p className="text-purple-700 text-sm">
-                {' '}
-                {'>'}130: Perros muy activos (trabajo o deporte en ambientes
+                {" "}
+                {">"}130: Perros muy activos (trabajo o deporte en ambientes
                 fríos). No muy común.
               </p>
             </div>
           )}
         </div>
+        <div className="flex justify-around items-center w-full mt-12 ">
+          <input
+            type="file"
+            accept="image/png, image/jpeg"
+            onChange={handleFileChange}
+            ref={imageInputRef}
+            style={{ display: "none" }}
+          />
+          <button
+            className="text-purple-700 border-2 w-30 p-2 rounded-md hover:bg-purple-100 hover:cursor-pointer hover:text-purple-600"
+            onClick={handleImageClick}
+          >
+            Subir Imagen
+          </button>
+          <button className="border-2 w-30 p-2 rounded-md bg-purple-600 text-white hover:cursor-pointer hover:bg-purple-700 hover:text-purple-100">
+            Crear Perfil
+          </button>
+        </div>
       </form>
     </div>
-  )
+  );
 }

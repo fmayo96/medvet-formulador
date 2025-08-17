@@ -15,7 +15,10 @@
     "dist:mac": "npm run transpile:electron && npm run build && electron-builder --mac --arm64"
   },
   "dependencies": {
+    "@libsql/client": "^0.15.11",
     "@tailwindcss/vite": "^4.1.11",
+    "dotenv": "^17.2.1",
+    "drizzle-orm": "^0.44.4",
     "lucide-react": "^0.539.0",
     "os-utils": "^0.0.14",
     "react": "^19.1.0",
@@ -29,6 +32,7 @@
     "@types/react-dom": "^19.1.6",
     "@vitejs/plugin-react": "^4.6.0",
     "cross-env": "^10.0.0",
+    "drizzle-kit": "^0.31.4",
     "electron": "^37.2.5",
     "electron-builder": "^26.0.12",
     "eslint": "^9.30.1",
@@ -36,6 +40,7 @@
     "eslint-plugin-react-refresh": "^0.4.20",
     "globals": "^16.3.0",
     "npm-run-all": "^4.1.5",
+    "tsx": "^4.20.4",
     "typescript": "~5.8.3",
     "typescript-eslint": "^8.35.1",
     "vite": "^7.0.4"
