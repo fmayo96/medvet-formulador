@@ -1,23 +1,23 @@
-import './App.css'
-import CreateProfile from './components/CreateProfile'
-import NavBar from './components/NavBar'
-import { useState } from 'react'
-import SavedProfiles from './components/SavedProfiles'
-import CreateRecipe from './components/CreateRecipe'
+import "./App.css";
+import CreateProfile from "./components/CreateProfile";
+import NavBar from "./components/NavBar";
+import { useState } from "react";
+import SavedProfiles from "./components/SavedProfiles";
+import CreateRecipe from "./components/CreateRecipe";
 
 function App() {
-  type SelectedButton = 1 | 2 | 3
-  const [selectedButton, setSelectedButton] = useState<SelectedButton>(1)
+  type SelectedButton = 1 | 2 | 3;
+  const [selectedButton, setSelectedButton] = useState<SelectedButton>(1);
 
   function handleSelectButton(buttonId: SelectedButton) {
-    setSelectedButton(buttonId)
+    setSelectedButton(buttonId);
   }
 
-  let content = <CreateProfile />
+  let content = <CreateProfile />;
   if (selectedButton === 2) {
-    content = <SavedProfiles />
+    content = <SavedProfiles />;
   } else if (selectedButton === 3) {
-    content = <CreateRecipe />
+    content = <CreateRecipe />;
   }
 
   return (
@@ -25,6 +25,6 @@ function App() {
       <NavBar selectedButton={selectedButton} onSelect={handleSelectButton} />
       {content}
     </main>
-  )
+  );
 }
-export default App
+export default App;
