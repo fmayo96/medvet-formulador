@@ -1,19 +1,19 @@
-import NavButton from './NavButton'
-import logoMedvet from '../assets/logo-medvet.png'
+import NavButton from "./NavButton";
+import logoMedvet from "../assets/logo-medvet.png";
 
-type SelectedButton = 1 | 2 | 3
+type SelectedButton = 1 | 2 | 3;
 
 type NavBarProps = {
-  selectedButton: SelectedButton
-  onSelect: (buttonId: SelectedButton) => void
-}
+  selectedButton: SelectedButton;
+  onSelect: (buttonId: SelectedButton) => void;
+};
 
 export default function NavBar({ selectedButton, onSelect }: NavBarProps) {
   const pages: { id: SelectedButton; name: string }[] = [
-    { id: 1, name: 'Crear Perfil' },
-    { id: 2, name: 'Perfiles Guardados' },
-    { id: 3, name: 'Crear Receta' },
-  ]
+    { id: 1, name: "Crear Perfil" },
+    { id: 2, name: "Perfiles Guardados" },
+    { id: 3, name: "Crear Receta" },
+  ];
 
   return (
     <nav className="w-1/4 h-screen text-center flex flex-col justify-between pt-8 gap-2 border-r-2 border-r-slate-200">
@@ -41,5 +41,5 @@ export default function NavBar({ selectedButton, onSelect }: NavBarProps) {
         <p>© MedvetPreventiva 2025 </p>
       </div>
     </nav>
-  )
+  );
 }
