@@ -35,6 +35,7 @@ export default function CreateProfile() {
     }));
   }
 
+
   function handleCheckBoxChange(event: ChangeEvent<HTMLInputElement>) {
     const { name, checked } = event.target;
     setPetData((prev) => ({
@@ -43,6 +44,18 @@ export default function CreateProfile() {
     }));
   }
 
+      
+  function handleNumChange(event: ChangeEvent<HTMLInputElement>) {
+    const { name, value } = event.target
+    const numValue = Number(value)
+    if (Number.isNaN(numValue)) return
+    setPetData((prev) => ({
+      ...prev,
+      [name]: numValue,
+    }))
+  }
+
+      
   function handleSelectChange(event: ChangeEvent<HTMLSelectElement>) {
     const { name, value } = event.target;
     setPetData((prev) => ({
@@ -102,7 +115,7 @@ export default function CreateProfile() {
             name="weight"
             value={petData.weight}
             type="number"
-            onChange={handleChange}
+            onChange={handleNumChange}
           />
           <Input
             label={
@@ -111,7 +124,7 @@ export default function CreateProfile() {
             name="age"
             value={petData.age}
             type="number"
-            onChange={handleChange}
+            onChange={handleNumChange}
           />
           <Input
             label="Tiene Pelo Negro"
