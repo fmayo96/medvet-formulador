@@ -1,5 +1,5 @@
-import { useState, useRef } from "react";
-import type { ChangeEvent } from "react";
+import { useState } from "react";
+import type { ChangeEvent, MouseEvent } from "react";
 import Input from "./Input";
 import Select from "./Select";
 
@@ -10,7 +10,7 @@ const reCachorro = /Cachorro/;
 export default function CreateProfile() {
   const [petData, setPetData] = useState<PetData>({
     name: "",
-    photo: null,
+    imgPath: null,
     age: 0,
     weight: 0,
     species: "Perro Adulto",
@@ -29,8 +29,6 @@ export default function CreateProfile() {
 
   function handleChange(event: ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target;
-    console.log(name);
-    console.log(typeof petData[name as keyof PetData]);
     setPetData((prev) => ({
       ...prev,
       [name]: value,
@@ -53,22 +51,18 @@ export default function CreateProfile() {
     }));
   }
 
-  function handleFileChange(event: ChangeEvent<HTMLInputElement>) {
-    if (event.target.files && event.target.files[0]) {
-      setPetData((prev) => ({
-        ...prev,
-        photo: event.target.files![0],
-      }));
-    }
+  async function handleImageClick(event: MouseEvent<HTMLButtonElement>) {
+    event.preventDefault();
+    const path = await window.electron.pickPhoto();
+    setPetData((prev) => ({
+      ...prev,
+      imgPath: path,
+    }));
   }
-
-  const imageInputRef = useRef<HTMLInputElement>(null);
-
-  function handleImageClick(e: React.MouseEvent<HTMLButtonElement>) {
-    e.preventDefault();
-    imageInputRef.current?.click();
+  async function handleSubmit(event: MouseEvent<HTMLButtonElement>) {
+    event.preventDefault();
+    await window.electron.submit(petData);
   }
-
   return (
     <div className="w-3/4 h-screen py-8 px-12 flex flex-col items-center">
       <h1 className="text-3xl mb-8">Crear Perfil</h1>
@@ -278,20 +272,16 @@ export default function CreateProfile() {
           )}
         </div>
         <div className="flex justify-around items-center w-full mt-12 ">
-          <input
-            type="file"
-            accept="image/png, image/jpeg"
-            onChange={handleFileChange}
-            ref={imageInputRef}
-            style={{ display: "none" }}
-          />
           <button
             className="text-purple-700 border-2 w-30 p-2 rounded-md hover:bg-purple-100 hover:cursor-pointer hover:text-purple-600"
             onClick={handleImageClick}
           >
             Subir Imagen
           </button>
-          <button className="border-2 w-30 p-2 rounded-md bg-purple-600 text-white hover:cursor-pointer hover:bg-purple-700 hover:text-purple-100">
+          <button
+            className="border-2 w-30 p-2 rounded-md bg-purple-600 text-white hover:cursor-pointer hover:bg-purple-700 hover:text-purple-100"
+            onClick={handleSubmit}
+          >
             Crear Perfil
           </button>
         </div>

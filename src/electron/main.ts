@@ -1,8 +1,9 @@
 import { app, BrowserWindow } from "electron";
 import { getPreloadPath, getUIPath } from "./path-resolver.js";
-import { ipcMainHandle, isDev } from "./util.js";
+import { ipcMainHandle, isDev, pickPhoto } from "./util.js";
 import "dotenv/config";
 import { drizzle } from "drizzle-orm/libsql";
+import { savePetProfile } from "./lib/pets.js";
 
 export const db = drizzle(process.env.DB_FILE_NAME!);
 
@@ -20,5 +21,6 @@ app.on("ready", () => {
   } else {
     mainWindow.loadFile(getUIPath());
   }
-  ipcMainHandle("hi", (data) => `Hi from ${data} Electron.js`);
+  ipcMainHandle("submit", savePetProfile);
+  ipcMainHandle("pickPhoto", pickPhoto);
 });

@@ -1,4 +1,4 @@
-import { ipcMain } from "electron";
+import { dialog, ipcMain } from "electron";
 import { pathToFileURL } from "url";
 import { getUIPath } from "./path-resolver.js";
 export function isDev() {
@@ -20,4 +20,13 @@ export function validateEventFrame(frame) {
     if (frame.url !== pathToFileURL(getUIPath()).toString()) {
         throw new Error("Malicious Event");
     }
+}
+export async function pickPhoto() {
+    const { canceled, filePaths } = await dialog.showOpenDialog({
+        properties: ["openFile"],
+        filters: [{ name: "Images", extensions: ["jpg", "png", "jpeg"] }],
+    });
+    if (canceled)
+        return null;
+    return filePaths[0];
 }
