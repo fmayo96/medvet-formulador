@@ -3,6 +3,7 @@ import electron from "electron";
 electron.contextBridge.exposeInMainWorld("electron", {
   submit: (pet: PetData) => ipcInvoke("submit", pet),
   pickPhoto: () => electron.ipcRenderer.invoke("pickPhoto"),
+  getAllPets: () => electron.ipcRenderer.invoke("getAllPets"),
 } satisfies Window["electron"]);
 
 function ipcInvoke<Key extends keyof EventPayloadMapping, Arg>(

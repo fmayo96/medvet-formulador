@@ -5,6 +5,7 @@ import { db } from "../main.js";
 //import { app } from "electron";
 
 export async function savePetProfile(pet: PetData) {
+  console.log("db:", db);
   const newPet: typeof petsTable.$inferInsert = {
     name: pet.name,
     age: pet.age,
@@ -26,4 +27,10 @@ export async function savePetProfile(pet: PetData) {
   };
 
   await db.insert(petsTable).values(newPet);
+}
+
+export async function getAllPets() {
+  console.log(db);
+  const pets = await db.select().from(petsTable);
+  return pets as PetDTO[];
 }
