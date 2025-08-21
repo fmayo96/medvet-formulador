@@ -1,7 +1,8 @@
-import { useReducer } from "react";
+import { useReducer, useContext } from "react";
 import type { ChangeEvent, MouseEvent } from "react";
 import Input from "./Input";
 import Select from "./Select";
+import { PageContext } from "../store/page-context";
 
 const reGato = /Gat/;
 const reLact = /Lactancia/;
@@ -34,6 +35,7 @@ interface Action {
 
 export default function CreateProfile() {
   const [petData, dispatch] = useReducer(petReducer, INITIAL_PET);
+  const { changeButtonId } = useContext(PageContext);
 
   function petReducer(petData: PetData, action: Action) {
     switch (action.type) {
@@ -108,6 +110,7 @@ export default function CreateProfile() {
   async function handleSubmit(event: MouseEvent<HTMLButtonElement>) {
     event.preventDefault();
     await window.electron.submit(petData);
+    if (changeButtonId) changeButtonId(2);
   }
   return (
     <div className="w-3/4 h-screen py-8 px-12 flex flex-col items-center">

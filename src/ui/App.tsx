@@ -4,9 +4,9 @@ import NavBar from "./components/NavBar";
 import { useState } from "react";
 import SavedProfiles from "./components/SavedProfiles";
 import CreateRecipe from "./components/CreateRecipe";
+import { PageContext } from "./store/page-context";
 
 function App() {
-  type SelectedButton = 1 | 2 | 3;
   const [selectedButton, setSelectedButton] = useState<SelectedButton>(1);
 
   function handleSelectButton(buttonId: SelectedButton) {
@@ -20,11 +20,18 @@ function App() {
     content = <CreateRecipe />;
   }
 
+  const ctxValue = {
+    buttonId: selectedButton,
+    changeButtonId: handleSelectButton,
+  };
+
   return (
-    <main className="flex h-screen w-screen gap-4">
-      <NavBar selectedButton={selectedButton} onSelect={handleSelectButton} />
-      {content}
-    </main>
+    <PageContext value={ctxValue}>
+      <main className="flex h-screen w-screen gap-4">
+        <NavBar />
+        {content}
+      </main>
+    </PageContext>
   );
 }
 export default App;

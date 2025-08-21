@@ -1,19 +1,16 @@
 import NavButton from "./NavButton";
 import logoMedvet from "../assets/logo-medvet.png";
+import { useContext } from "react";
+import { PageContext } from "../store/page-context";
 
-type SelectedButton = 1 | 2 | 3;
-
-type NavBarProps = {
-  selectedButton: SelectedButton;
-  onSelect: (buttonId: SelectedButton) => void;
-};
-
-export default function NavBar({ selectedButton, onSelect }: NavBarProps) {
+export default function NavBar() {
   const pages: { id: SelectedButton; name: string }[] = [
     { id: 1, name: "Crear Perfil" },
     { id: 2, name: "Perfiles Guardados" },
     { id: 3, name: "Crear Receta" },
   ];
+
+  const { buttonId, changeButtonId } = useContext(PageContext);
 
   return (
     <nav className="w-1/4 h-screen text-center flex flex-col justify-between pt-8 gap-2 border-r-2 border-r-slate-200">
@@ -28,9 +25,9 @@ export default function NavBar({ selectedButton, onSelect }: NavBarProps) {
         {pages.map((p) => (
           <NavButton
             key={p.id}
-            onSelect={onSelect}
+            onSelect={changeButtonId!}
             name={p.name}
-            isSelected={p.id === selectedButton}
+            isSelected={p.id === buttonId}
             id={p.id}
           ></NavButton>
         ))}

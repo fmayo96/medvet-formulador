@@ -5,6 +5,8 @@ interface Window {
   };
 }
 
+type SelectedButton = 1 | 2 | 3;
+
 type EventPayloadMapping = {
   submit: void;
   pickPhoto: string | null;
