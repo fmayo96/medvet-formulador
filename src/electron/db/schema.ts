@@ -3,9 +3,10 @@ import { int, sqliteTable, text } from "drizzle-orm/sqlite-core";
 export const petsTable = sqliteTable("pets_table", {
   id: int().primaryKey({ autoIncrement: true }),
   name: text().notNull(),
-  photo: text().notNull(),
+  imgPath: text(),
   age: int().notNull(),
   weight: int().notNull(),
+  adultWeight: int().notNull(),
   species: text().notNull(),
   numCachorros: int().notNull(),
   lactancyWeek: int(),

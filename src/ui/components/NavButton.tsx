@@ -1,4 +1,4 @@
-type SelectedButton = 1 | 2 | 3;
+import { SelectedButton } from "../store/page-context";
 
 type NavButtonProps = {
   name: string;

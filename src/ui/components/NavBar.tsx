@@ -1,13 +1,13 @@
 import NavButton from "./NavButton";
 import logoMedvet from "../assets/logo-medvet.png";
 import { useContext } from "react";
-import { PageContext } from "../store/page-context";
+import { PageContext, SelectedButton } from "../store/page-context";
 
 export default function NavBar() {
   const pages: { id: SelectedButton; name: string }[] = [
-    { id: 1, name: "Crear Perfil" },
-    { id: 2, name: "Perfiles Guardados" },
-    { id: 3, name: "Crear Receta" },
+    { id: SelectedButton.CREATE_PROFILE, name: "Crear Perfil" },
+    { id: SelectedButton.SAVED_PROFILES, name: "Perfiles Guardados" },
+    { id: SelectedButton.CREATE_RECIPE, name: "Crear Receta" },
   ];
 
   const { buttonId, changeButtonId } = useContext(PageContext);

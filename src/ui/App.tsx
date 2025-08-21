@@ -4,19 +4,21 @@ import NavBar from "./components/NavBar";
 import { useState } from "react";
 import SavedProfiles from "./components/SavedProfiles";
 import CreateRecipe from "./components/CreateRecipe";
-import { PageContext } from "./store/page-context";
+import { PageContext, SelectedButton } from "./store/page-context";
 
 function App() {
-  const [selectedButton, setSelectedButton] = useState<SelectedButton>(1);
+  const [selectedButton, setSelectedButton] = useState<SelectedButton>(
+    SelectedButton.CREATE_PROFILE,
+  );
 
   function handleSelectButton(buttonId: SelectedButton) {
     setSelectedButton(buttonId);
   }
 
   let content = <CreateProfile />;
-  if (selectedButton === 2) {
+  if (selectedButton === SelectedButton.SAVED_PROFILES) {
     content = <SavedProfiles />;
-  } else if (selectedButton === 3) {
+  } else if (selectedButton === SelectedButton.CREATE_RECIPE) {
     content = <CreateRecipe />;
   }
 

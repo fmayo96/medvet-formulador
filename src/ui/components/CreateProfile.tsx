@@ -2,7 +2,9 @@ import { useReducer, useContext } from "react";
 import type { ChangeEvent, MouseEvent } from "react";
 import Input from "./Input";
 import Select from "./Select";
-import { PageContext } from "../store/page-context";
+import { PageContext, SelectedButton } from "../store/page-context";
+import { calculateCaloricIntake } from "../lib/caloric-intake";
+//import { calculateCaloricIntake } from "../lib/caloric-intake";
 
 const reGato = /Gat/;
 const reLact = /Lactancia/;
@@ -13,6 +15,7 @@ const INITIAL_PET: PetData = {
   imgPath: null,
   age: 0,
   weight: 0,
+  adultWeight: 0,
   species: "Perro Adulto",
   numCachorros: 0,
   lactancyWeek: 1,
@@ -22,7 +25,7 @@ const INITIAL_PET: PetData = {
   isIdealWeight: false,
   idealWeight: 0,
   useRecommendedCaloricIntake: true, // true for calculated value
-  recommendedCaloricIntake: 0, // use this if useRecommendedCaloricIntake === false
+  recommendedCaloricIntake: 0,
   customCaloricIntake: 0,
   otherNotes: "",
 };
@@ -36,6 +39,8 @@ interface Action {
 export default function CreateProfile() {
   const [petData, dispatch] = useReducer(petReducer, INITIAL_PET);
   const { changeButtonId } = useContext(PageContext);
+
+  const recommendedCaloricIntake = calculateCaloricIntake(petData);
 
   function petReducer(petData: PetData, action: Action) {
     switch (action.type) {
@@ -109,8 +114,11 @@ export default function CreateProfile() {
   }
   async function handleSubmit(event: MouseEvent<HTMLButtonElement>) {
     event.preventDefault();
-    await window.electron.submit(petData);
-    if (changeButtonId) changeButtonId(2);
+    await window.electron.submit({
+      ...petData,
+      recommendedCaloricIntake: recommendedCaloricIntake,
+    });
+    if (changeButtonId) changeButtonId(SelectedButton.SAVED_PROFILES);
   }
   return (
     <div className="w-3/4 h-screen py-8 px-12 flex flex-col items-center">
@@ -178,6 +186,15 @@ export default function CreateProfile() {
               onChange={handleChange}
             />
           )}
+          {reCachorro.test(petData.species) && (
+            <Input
+              label="Peso de Adulto (Kg)"
+              type="number"
+              name="adultWeight"
+              value={petData.adultWeight}
+              onChange={handleNumChange}
+            />
+          )}
           {reLact.test(petData.species) ? (
             <Input
               type="number"
@@ -189,8 +206,7 @@ export default function CreateProfile() {
           ) : (
             <p></p>
           )}
-
-          {reLact.test(petData.species) ? (
+          {petData.species === "Perra Lactancia" && (
             <Select
               label="Semana de Lactancia"
               name="lactancyWeek"
@@ -202,8 +218,22 @@ export default function CreateProfile() {
               <option value={3}>3</option>
               <option value={4}>4</option>
             </Select>
-          ) : (
-            <p></p>
+          )}
+          {petData.species === "Gata Lactancia" && (
+            <Select
+              label="Semana de Lactancia"
+              name="lactancyWeek"
+              value={petData.lactancyWeek}
+              onChange={handleSelectChange}
+            >
+              <option value={1}>1</option>
+              <option value={2}>2</option>
+              <option value={3}>3</option>
+              <option value={4}>4</option>
+              <option value={5}>5</option>
+              <option value={6}>6</option>
+              <option value={7}>7</option>
+            </Select>
           )}
         </div>
         <h2 className="text-xl mt-4 mb-8 self-center font-medium">
@@ -237,7 +267,7 @@ export default function CreateProfile() {
                 Ingesta Calórica Recomendada (Kcal)
               </label>
               <p className="border-1 border-slate-800 py-1 px-2 rounded-md bg-slate-200">
-                {petData.recommendedCaloricIntake}
+                {recommendedCaloricIntake}
               </p>
             </div>
             <Input

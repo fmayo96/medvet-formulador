@@ -5,8 +5,6 @@ interface Window {
   };
 }
 
-type SelectedButton = 1 | 2 | 3;
-
 type EventPayloadMapping = {
   submit: void;
   pickPhoto: string | null;
@@ -27,6 +25,7 @@ interface PetData {
   imgPath: string | null;
   age: number;
   weight: number;
+  adultWeight: number;
   species: Species;
   numCachorros: number;
   lactancyWeek: 1 | 2 | 3 | 4;
@@ -36,7 +35,7 @@ interface PetData {
   isIdealWeight: boolean;
   idealWeight: number;
   useRecommendedCaloricIntake: boolean; // true for calculated value
-  recommendedCaloricIntake: number; // use this if useRecommendedCaloricIntake === false
+  recommendedCaloricIntake: number;
   customCaloricIntake: number;
   otherNotes: string;
 }
