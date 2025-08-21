@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useReducer } from "react";
 import type { ChangeEvent, MouseEvent } from "react";
 import Input from "./Input";
 import Select from "./Select";
@@ -7,70 +7,103 @@ const reGato = /Gat/;
 const reLact = /Lactancia/;
 const reCachorro = /Cachorro/;
 
+const INITIAL_PET: PetData = {
+  name: "",
+  imgPath: null,
+  age: 0,
+  weight: 0,
+  species: "Perro Adulto",
+  numCachorros: 0,
+  lactancyWeek: 1,
+  hasBlackFurr: false,
+  isCatOverweight: false,
+  estimatedEnergyFactor: 0,
+  isIdealWeight: false,
+  idealWeight: 0,
+  useRecommendedCaloricIntake: true, // true for calculated value
+  recommendedCaloricIntake: 0, // use this if useRecommendedCaloricIntake === false
+  customCaloricIntake: 0,
+  otherNotes: "",
+};
+
+interface Action {
+  type: string;
+  event?: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement>;
+  path?: string;
+}
+
 export default function CreateProfile() {
-  const [petData, setPetData] = useState<PetData>({
-    name: "",
-    imgPath: null,
-    age: 0,
-    weight: 0,
-    species: "Perro Adulto",
-    numCachorros: 0,
-    lactancyWeek: 1,
-    hasBlackFurr: false,
-    isCatOverweight: false,
-    estimatedEnergyFactor: 0,
-    isIdealWeight: false,
-    idealWeight: 0,
-    useRecommendedCaloricIntake: true, // true for calculated value
-    recommendedCaloricIntake: 0, // use this if useRecommendedCaloricIntake === false
-    customCaloricIntake: 0,
-    otherNotes: "",
-  });
+  const [petData, dispatch] = useReducer(petReducer, INITIAL_PET);
+
+  function petReducer(petData: PetData, action: Action) {
+    switch (action.type) {
+      case "changeInput": {
+        if (action.event!.target.type === "checkbox") {
+          const { name, checked } = action.event!.target;
+          return {
+            ...petData,
+            [name]: checked,
+          };
+        }
+        const { name, value } = action.event!.target;
+        return { ...petData, [name]: value };
+      }
+      case "changeNum": {
+        const { name, value } = action.event!.target;
+        const numValue = Number(value);
+        if (Number.isNaN(numValue)) return petData;
+        return {
+          ...petData,
+          [name]: numValue,
+        };
+      }
+      case "changeSelect": {
+        const { name, value } = action.event!.target;
+        return {
+          ...petData,
+          [name]: value,
+        };
+      }
+      case "changeImage": {
+        return {
+          ...petData,
+          path: action.path!,
+        };
+      }
+      default:
+        return petData;
+    }
+  }
 
   function handleChange(event: ChangeEvent<HTMLInputElement>) {
-    const { name, value } = event.target;
-    setPetData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    dispatch({
+      type: "changeInput",
+      event: event,
+    });
   }
 
-
-  function handleCheckBoxChange(event: ChangeEvent<HTMLInputElement>) {
-    const { name, checked } = event.target;
-    setPetData((prev) => ({
-      ...prev,
-      [name]: checked,
-    }));
-  }
-
-      
   function handleNumChange(event: ChangeEvent<HTMLInputElement>) {
-    const { name, value } = event.target
-    const numValue = Number(value)
-    if (Number.isNaN(numValue)) return
-    setPetData((prev) => ({
-      ...prev,
-      [name]: numValue,
-    }))
+    dispatch({
+      type: "changeNum",
+      event: event,
+    });
   }
 
-      
   function handleSelectChange(event: ChangeEvent<HTMLSelectElement>) {
-    const { name, value } = event.target;
-    setPetData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    dispatch({
+      type: "changeSelect",
+      event: event,
+    });
   }
 
   async function handleImageClick(event: MouseEvent<HTMLButtonElement>) {
     event.preventDefault();
     const path = await window.electron.pickPhoto();
-    setPetData((prev) => ({
-      ...prev,
-      imgPath: path,
-    }));
+    if (path === null) return;
+    dispatch({
+      type: "changeImage",
+      path: path,
+    });
   }
   async function handleSubmit(event: MouseEvent<HTMLButtonElement>) {
     event.preventDefault();
@@ -131,7 +164,7 @@ export default function CreateProfile() {
             type="checkbox"
             name="hasBlackFurr"
             value={petData.hasBlackFurr}
-            onChange={handleCheckBoxChange}
+            onChange={handleChange}
           />
           {reGato.test(petData.species) && (
             <Input
@@ -139,7 +172,7 @@ export default function CreateProfile() {
               type="checkbox"
               name="isCatOverweight"
               value={petData.isCatOverweight}
-              onChange={handleCheckBoxChange}
+              onChange={handleChange}
             />
           )}
           {reLact.test(petData.species) ? (
@@ -187,7 +220,7 @@ export default function CreateProfile() {
               type="checkbox"
               name="isIdealWeight"
               value={petData.isIdealWeight}
-              onChange={handleCheckBoxChange}
+              onChange={handleChange}
             />
             <Input
               label="Peso Ideal (Kg)"
@@ -209,7 +242,7 @@ export default function CreateProfile() {
               type="checkbox"
               name="useRecommendedCaloricIntake"
               value={petData.useRecommendedCaloricIntake}
-              onChange={handleCheckBoxChange}
+              onChange={handleChange}
             />
             {!petData.useRecommendedCaloricIntake && (
               <Input
