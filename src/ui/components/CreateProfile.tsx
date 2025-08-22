@@ -32,7 +32,10 @@ const INITIAL_PET: PetData = {
 
 interface Action {
   type: string;
-  event?: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement>;
+  event?:
+    | ChangeEvent<HTMLInputElement>
+    | ChangeEvent<HTMLSelectElement>
+    | ChangeEvent<HTMLTextAreaElement>;
   path?: string;
 }
 
@@ -77,6 +80,13 @@ export default function CreateProfile() {
           imgPath: action.path!,
         };
       }
+      case "changeTextArea": {
+        const { name, value } = action.event!.target;
+        return {
+          ...petData,
+          [name]: value,
+        };
+      }
       default:
         return petData;
     }
@@ -85,6 +95,13 @@ export default function CreateProfile() {
   function handleChange(event: ChangeEvent<HTMLInputElement>) {
     dispatch({
       type: "changeInput",
+      event: event,
+    });
+  }
+
+  function handleTextAreaChange(event: ChangeEvent<HTMLTextAreaElement>) {
+    dispatch({
+      type: "changeTextArea",
       event: event,
     });
   }
@@ -349,6 +366,16 @@ export default function CreateProfile() {
               </p>
             </div>
           )}
+        </div>
+        <div className="flex flex-col w-full gap-4">
+          <p className="font-semibold text-md">Otras Notas:</p>
+          <textarea
+            className="border-1 border-slate-300 p-4 rounded-md resize-none"
+            name="otherNotes"
+            rows={8}
+            value={petData.otherNotes}
+            onChange={handleTextAreaChange}
+          />
         </div>
         <div className="flex justify-around items-center w-full mt-12 ">
           <button
