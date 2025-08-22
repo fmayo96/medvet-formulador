@@ -157,7 +157,7 @@ export default function CreateProfile() {
             onChange={handleChange}
           />
           <Select
-            label="El Animal es"
+            label="El animal es"
             name="species"
             value={petData.species}
             onChange={handleSelectChange}
@@ -172,7 +172,7 @@ export default function CreateProfile() {
             <option value="Gata Lactancia">Gata Lactancia</option>
           </Select>
           <Input
-            label="Peso (Kg)"
+            label="Peso (kg)"
             name="weight"
             value={petData.weight}
             type="number"
@@ -180,7 +180,7 @@ export default function CreateProfile() {
           />
           <Input
             label={
-              reCachorro.test(petData.species) ? "Edad (Meses)" : "Edad (Años)"
+              reCachorro.test(petData.species) ? "Edad (meses)" : "Edad (años)"
             }
             name="age"
             value={petData.age}
@@ -188,7 +188,7 @@ export default function CreateProfile() {
             onChange={handleNumChange}
           />
           <Input
-            label="Tiene Pelo Negro"
+            label="Tiene pelo negro"
             type="checkbox"
             name="hasBlackFurr"
             value={petData.hasBlackFurr}
@@ -196,7 +196,7 @@ export default function CreateProfile() {
           />
           {reGato.test(petData.species) && (
             <Input
-              label="Gato con Sobrepeso"
+              label="Gato con sobrepeso"
               type="checkbox"
               name="isCatOverweight"
               value={petData.isCatOverweight}
@@ -205,7 +205,7 @@ export default function CreateProfile() {
           )}
           {reCachorro.test(petData.species) && (
             <Input
-              label="Peso de Adulto (Kg)"
+              label="Peso de adulto (kg)"
               type="number"
               name="adultWeight"
               value={petData.adultWeight}
@@ -215,7 +215,7 @@ export default function CreateProfile() {
           {reLact.test(petData.species) ? (
             <Input
               type="number"
-              label="Cantidad de Cachorros"
+              label="Cantidad de cachorros"
               name="numCachorros"
               value={petData.numCachorros}
               onChange={handleChange}
@@ -225,7 +225,7 @@ export default function CreateProfile() {
           )}
           {petData.species === "Perra Lactancia" && (
             <Select
-              label="Semana de Lactancia"
+              label="Semana de lactancia"
               name="lactancyWeek"
               value={petData.lactancyWeek}
               onChange={handleSelectChange}
@@ -238,7 +238,7 @@ export default function CreateProfile() {
           )}
           {petData.species === "Gata Lactancia" && (
             <Select
-              label="Semana de Lactancia"
+              label="Semana de lactancia"
               name="lactancyWeek"
               value={petData.lactancyWeek}
               onChange={handleSelectChange}
@@ -259,21 +259,21 @@ export default function CreateProfile() {
         <div className="grid grid-cols-[2fr_1fr] gap-4">
           <div className="grid grid-cols-2 gap-4">
             <Input
-              label="Factor de Energía Estimado"
+              label="Factor de energía estimado"
               type="number"
               name="estimatedEnergyFactor"
               value={petData.estimatedEnergyFactor}
               onChange={handleChange}
             />
             <Input
-              label="Está en su Peso Ideal?"
+              label="Está en su peso ideal?"
               type="checkbox"
               name="isIdealWeight"
               value={petData.isIdealWeight}
               onChange={handleChange}
             />
             <Input
-              label="Peso Ideal (Kg)"
+              label="Peso ideal (kg)"
               type="text"
               name="idealWeight"
               value={petData.idealWeight}
@@ -281,14 +281,14 @@ export default function CreateProfile() {
             />
             <div className="flex flex-col gap-1">
               <label className="text-lg">
-                Ingesta Calórica Recomendada (Kcal)
+                Ingesta calórica recomendada (kcal)
               </label>
               <p className="border-1 border-slate-800 py-1 px-2 rounded-md bg-slate-200">
                 {recommendedCaloricIntake}
               </p>
             </div>
             <Input
-              label="Usar Ingesta Calórica Recomendada"
+              label="Usar ingesta calórica recomendada"
               type="checkbox"
               name="useRecommendedCaloricIntake"
               value={petData.useRecommendedCaloricIntake}
@@ -296,7 +296,7 @@ export default function CreateProfile() {
             />
             {!petData.useRecommendedCaloricIntake && (
               <Input
-                label="Ingesta Calórica Personalizada (Kcal)"
+                label="Ingesta calórica personalizada (kcal)"
                 type="number"
                 name="customCaloricIntake"
                 value={petData.customCaloricIntake}
@@ -307,7 +307,7 @@ export default function CreateProfile() {
           {reGato.test(petData.species) ? (
             <div className="flex flex-col gap-2 bg-purple-50 border-1 border-purple-700 rounded-md p-4 mt-4">
               <h3 className="font-medium text-purple-700">
-                Factor de Energía Estimado: Gatos
+                Factor de energía estimado: Gatos
               </h3>
               <p className="text-purple-700 text-sm">
                 Ingresar el factor de energía estimado para mantener el peso, no
@@ -337,7 +337,7 @@ export default function CreateProfile() {
           ) : (
             <div className="flex flex-col gap-2 bg-purple-50  border-1 border-purple-700 rounded-md p-4 mt-4">
               <h3 className="font-medium text-purple-700">
-                Factor de Energía Estimado: Perros
+                Factor de energía estimado: Perros
               </h3>
               <p className="text-purple-700 text-sm">
                 Ingresar el factor de energía estimado para mantener el peso, no
@@ -368,9 +368,9 @@ export default function CreateProfile() {
           )}
         </div>
         <div className="flex flex-col w-full gap-4">
-          <p className="font-semibold text-md">Otras Notas:</p>
+          <p className="font-semibold text-md">Otras notas:</p>
           <textarea
-            className="border-1 border-slate-300 p-4 rounded-md resize-none"
+            className="border-1 border-slate-300 p-4 rounded-md resize-none focus:outline-none"
             name="otherNotes"
             rows={8}
             value={petData.otherNotes}
@@ -382,13 +382,13 @@ export default function CreateProfile() {
             className="text-purple-700 border-2 w-30 p-2 rounded-md hover:bg-purple-100 hover:cursor-pointer hover:text-purple-600"
             onClick={handleImageClick}
           >
-            Subir Imagen
+            Subir imagen
           </button>
           <button
             className="border-2 w-30 p-2 rounded-md bg-purple-600 text-white hover:cursor-pointer hover:bg-purple-700 hover:text-purple-100"
             onClick={handleSubmit}
           >
-            Crear Perfil
+            Crear perfil
           </button>
         </div>
       </form>
