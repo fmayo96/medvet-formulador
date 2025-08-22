@@ -12,9 +12,24 @@ export default function SavedProfiles() {
   }, []);
 
   return (
-    <div className="w-3/4 p-8 flex justify-center gap-4">
+    <div className="w-3/4 p-8 flex flex-col items-center gap-4">
       <h1 className="text-3xl">Perfiles Guardados</h1>
-      <ol>{pets && pets.map((p) => <li key={p.id}>{p.name}</li>)}</ol>
+      <ol>
+        {pets &&
+          pets.map((p) => (
+            <div>
+              <li key={p.id}>{p.name}</li>
+              {p.imgPath && (
+                <img
+                  src={`file://${p.imgPath}`}
+                  alt="pet image"
+                  width={100}
+                  height={100}
+                />
+              )}
+            </div>
+          ))}
+      </ol>
     </div>
   );
 }

@@ -74,7 +74,7 @@ export default function CreateProfile() {
       case "changeImage": {
         return {
           ...petData,
-          path: action.path!,
+          imgPath: action.path!,
         };
       }
       default:

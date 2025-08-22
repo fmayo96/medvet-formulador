@@ -1,15 +1,26 @@
 import { petsTable } from "../db/schema.js";
 import { db } from "../main.js";
-//import path from "path";
-//import fs from "fs";
-//import { app } from "electron";
+import path from "path";
+import { promises as fs } from "fs";
+import { app } from "electron";
 
 export async function savePetProfile(pet: PetData) {
-  console.log("db:", db);
+  const sourcePath = pet.imgPath!;
+  const extension = pet.imgPath!.split(".").pop();
+  const destFileName = `${pet.name.toLowerCase()}.${extension}`;
+  const destFolder = path.join(app.getPath("userData"), "images");
+  const destPath = path.join(app.getPath("userData"), "images", destFileName);
+
+  try {
+    fs.mkdir(destFolder, { recursive: true });
+    await fs.copyFile(sourcePath, destPath);
+  } catch (error) {
+    console.error(error);
+  }
   const newPet: typeof petsTable.$inferInsert = {
     name: pet.name,
     age: pet.age,
-    imgPath: pet.imgPath,
+    imgPath: destPath,
     weight: pet.weight,
     adultWeight: pet.adultWeight,
     recommendedCaloricIntake: pet.recommendedCaloricIntake,
@@ -30,7 +41,6 @@ export async function savePetProfile(pet: PetData) {
 }
 
 export async function getAllPets() {
-  console.log(db);
   const pets = await db.select().from(petsTable);
   return pets as PetDTO[];
 }

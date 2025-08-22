@@ -17,6 +17,7 @@ app.on("ready", () => {
     title: "Medvet Formulador",
     webPreferences: {
       preload: getPreloadPath(),
+      webSecurity: false,
     },
     width: 1600,
     height: 900,
