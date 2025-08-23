@@ -4,7 +4,9 @@ import Input from "./Input";
 import Select from "./Select";
 import { PageContext, SelectedButton } from "../store/page-context";
 import { calculateCaloricIntake } from "../lib/caloric-intake";
-//import { calculateCaloricIntake } from "../lib/caloric-intake";
+import Page from "./Page";
+import Title from "./Title";
+import Button from "./Button";
 
 const reGato = /Gat/;
 const reLact = /Lactancia/;
@@ -138,9 +140,8 @@ export default function CreateProfile() {
     if (changeButtonId) changeButtonId(SelectedButton.SAVED_PROFILES);
   }
   return (
-    <div className="w-3/4 h-screen py-8 px-12 flex flex-col items-center">
-      <h1 className="text-3xl mb-8">Crear Perfil</h1>
-      <hr className="border-slate-300 border-1 w-full" />
+    <Page>
+      <Title content="Crear Perfil" />
       <form
         className="flex flex-col w-full overflow-auto"
         style={{ scrollbarWidth: "none" }}
@@ -305,61 +306,61 @@ export default function CreateProfile() {
             )}
           </div>
           {reGato.test(petData.species) ? (
-            <div className="flex flex-col gap-2 bg-purple-50 border-1 border-purple-700 rounded-md p-4 mt-4">
-              <h3 className="font-medium text-purple-700">
+            <div className="flex flex-col gap-2 bg-sky-50 border-1 border-sky-700 rounded-md p-4 mt-4">
+              <h3 className="font-medium text-sky-700">
                 Factor de energía estimado: Gatos
               </h3>
-              <p className="text-purple-700 text-sm">
+              <p className="text-sky-700 text-sm">
                 Ingresar el factor de energía estimado para mantener el peso, no
                 para subir o bajar.
               </p>
-              <p className="text-purple-700 text-sm">
+              <p className="text-sky-700 text-sm">
                 {"<"}55: Sedentario. Si tiene sobrepeso marcar la checkbox
                 arriba.
               </p>
-              <p className="text-purple-700 text-sm">
+              <p className="text-sky-700 text-sm">
                 55-70: Gatos de hogar, parcialmente sedentarios con explosiónes
                 breves de energía.
               </p>
-              <p className="text-purple-700 text-sm">
+              <p className="text-sky-700 text-sm">
                 70 - 100: Gatos de hogar activos. Gatos jóvenes y razas
                 exóticas.
               </p>
-              <p className="text-purple-700 text-sm">
+              <p className="text-sky-700 text-sm">
                 {">"}100: Gatos muy activos o razas exóticas. Usualmente los
                 gatos de exterior o de granero.
               </p>
-              <p className="text-purple-700 text-sm">
+              <p className="text-sky-700 text-sm">
                 La mayoría de los gatos adultos están en 55-80. Excepciones:
                 gatos jóvenes o de razas exóticas.
               </p>
             </div>
           ) : (
-            <div className="flex flex-col gap-2 bg-purple-50  border-1 border-purple-700 rounded-md p-4 mt-4">
-              <h3 className="font-medium text-purple-700">
+            <div className="flex flex-col gap-2 bg-sky-50  border-1 border-sky-700 rounded-md p-4 mt-4">
+              <h3 className="font-medium text-sky-700">
                 Factor de energía estimado: Perros
               </h3>
-              <p className="text-purple-700 text-sm">
+              <p className="text-sky-700 text-sm">
                 Ingresar el factor de energía estimado para mantener el peso, no
                 para subir o bajar.
               </p>
-              <p className="text-purple-700 text-sm">
+              <p className="text-sky-700 text-sm">
                 {"<"}80: Sedentario. Pueden ser también perros mayores o perros
                 activos con metabolismo bajo.
               </p>
-              <p className="text-purple-700 text-sm">
+              <p className="text-sky-700 text-sm">
                 80-95: Mascota normal de hogar. Típicamente perros de mediana
                 edad. activos con metabolismo bajo.
               </p>
-              <p className="text-purple-700 text-sm">
+              <p className="text-sky-700 text-sm">
                 95-110: Perros con estilo de vida activo (hiking, deportes, vida
                 en granja) o jóvenes.
               </p>
-              <p className="text-purple-700 text-sm">
+              <p className="text-sky-700 text-sm">
                 110-130: Perros de trabajo y adultos jóvenes, especialmente si
                 on están castrados.
               </p>
-              <p className="text-purple-700 text-sm">
+              <p className="text-sky-700 text-sm">
                 {" "}
                 {">"}130: Perros muy activos (trabajo o deporte en ambientes
                 fríos). No muy común.
@@ -378,20 +379,14 @@ export default function CreateProfile() {
           />
         </div>
         <div className="flex justify-around items-center w-full mt-12 ">
-          <button
-            className="text-purple-700 border-2 w-30 p-2 rounded-md hover:bg-purple-100 hover:cursor-pointer hover:text-purple-600"
-            onClick={handleImageClick}
-          >
+          <Button type="light" onClick={handleImageClick}>
             Subir imagen
-          </button>
-          <button
-            className="border-2 w-30 p-2 rounded-md bg-purple-600 text-white hover:cursor-pointer hover:bg-purple-700 hover:text-purple-100"
-            onClick={handleSubmit}
-          >
+          </Button>
+          <Button type="dark" onClick={handleSubmit}>
             Crear perfil
-          </button>
+          </Button>
         </div>
       </form>
-    </div>
+    </Page>
   );
 }

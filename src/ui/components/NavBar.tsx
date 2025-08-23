@@ -15,7 +15,13 @@ export default function NavBar() {
   return (
     <nav className="w-1/4 h-screen text-center flex flex-col justify-between pt-8 gap-2 border-r-2 border-r-slate-200">
       <div className="flex align-middle justify-center gap-4">
-        <img src={logoMedvet} alt="logo de Medvet" width={80} />
+        <div className="w-20 overflow-hidden">
+          <img
+            src={logoMedvet}
+            alt="logo de Medvet"
+            className="w-full object-cover"
+          />
+        </div>
         <h1 className="text-3xl mb-4 pt-4">Formulador</h1>
       </div>
 
