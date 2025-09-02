@@ -2,14 +2,16 @@ interface Window {
   electron: {
     submit: (pet: PetData) => Promise<void>
     pickPhoto: () => Promise<string | null>
-    getAllPets: () => Promise<PetDTO[]>
+    getAllPets: () => Promise<PetInfo[]>
+    getPetById: (id: number) => Promise<PetDTO[]>
   }
 }
 
 type EventPayloadMapping = {
   submit: void
   pickPhoto: string | null
-  getAllPets: PetDTO[]
+  getAllPets: PetInfo[]
+  getPetById: PetDTO[]
 }
 
 type Species =
@@ -65,4 +67,13 @@ interface PetDTO {
   recommendedCaloricIntake: number
   customCaloricIntake: number
   otherNotes: string
+}
+
+interface PetInfo {
+  id: number
+  name: string
+  imgPath: string | null
+  age: number
+  weight: number
+  species: Species
 }

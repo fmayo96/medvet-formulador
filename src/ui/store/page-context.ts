@@ -1,16 +1,20 @@
-import { createContext } from "react";
+import { createContext } from 'react'
 
-export enum SelectedButton {
-  "CREATE_PROFILE" = 1,
-  "SAVED_PROFILES" = 2,
-  "CREATE_RECIPE" = 3,
+export enum Routes {
+  'CREATE_PROFILE' = 1,
+  'SAVED_PROFILES' = 2,
+  'CREATE_RECIPE' = 3,
+  'PET_PROFILE' = 4,
 }
 
 interface PageCtx {
-  buttonId: SelectedButton;
-  changeButtonId?: (buttonId: SelectedButton) => void;
+  route: Routes
+  changeRoute?: (route: Routes) => void
+  petId?: number
+  changePetId?: (id: number) => void
 }
 
 export const PageContext = createContext<PageCtx>({
-  buttonId: SelectedButton.CREATE_PROFILE,
-});
+  route: Routes.CREATE_PROFILE,
+  petId: undefined,
+})

@@ -1,16 +1,16 @@
-import NavButton from "./NavButton";
-import logoMedvet from "../assets/logo-medvet.png";
-import { useContext } from "react";
-import { PageContext, SelectedButton } from "../store/page-context";
+import NavButton from './NavButton'
+import logoMedvet from '../assets/logo-medvet.png'
+import { useContext } from 'react'
+import { PageContext, Routes } from '../store/page-context'
 
-export default function NavBar() {
-  const pages: { id: SelectedButton; name: string }[] = [
-    { id: SelectedButton.CREATE_PROFILE, name: "Crear Perfil" },
-    { id: SelectedButton.SAVED_PROFILES, name: "Perfiles Guardados" },
-    { id: SelectedButton.CREATE_RECIPE, name: "Crear Receta" },
-  ];
+const NavBar = () => {
+  const pages: { id: Routes; name: string }[] = [
+    { id: Routes.CREATE_PROFILE, name: 'Crear Perfil' },
+    { id: Routes.SAVED_PROFILES, name: 'Perfiles Guardados' },
+    { id: Routes.CREATE_RECIPE, name: 'Crear Receta' },
+  ]
 
-  const { buttonId, changeButtonId } = useContext(PageContext);
+  const { route, changeRoute } = useContext(PageContext)
 
   return (
     <nav className="w-1/4 h-screen text-center flex flex-col justify-between pt-8 gap-2 border-r-2 border-r-slate-200">
@@ -31,9 +31,9 @@ export default function NavBar() {
         {pages.map((p) => (
           <NavButton
             key={p.id}
-            onSelect={changeButtonId!}
+            onSelect={changeRoute!}
             name={p.name}
-            isSelected={p.id === buttonId}
+            isSelected={p.id === route}
             id={p.id}
           ></NavButton>
         ))}
@@ -44,5 +44,6 @@ export default function NavBar() {
         <p>© MedvetPreventiva 2025 </p>
       </div>
     </nav>
-  );
+  )
 }
+export default NavBar

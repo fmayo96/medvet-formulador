@@ -3,9 +3,12 @@ import type { ChangeEvent, MouseEvent } from 'react'
 import Input from './Input'
 import Select from './Select'
 import Button from './Button'
-import { PageContext, SelectedButton } from '../store/page-context'
-import { calculateCaloricIntake } from '../lib/caloric-intake'
-import { validateMacronutrients } from '../lib/validations'
+import { PageContext, Routes } from '../store'
+import {
+  petReducer,
+  validateMacronutrients,
+  calculateCaloricIntake,
+} from '../lib'
 
 const reGato = /Gat/
 const reLact = /Lactancia/
@@ -35,69 +38,12 @@ const INITIAL_PET: PetData = {
   otherNotes: '',
 }
 
-interface Action {
-  type: string
-  event?:
-    | ChangeEvent<HTMLInputElement>
-    | ChangeEvent<HTMLSelectElement>
-    | ChangeEvent<HTMLTextAreaElement>
-  path?: string
-}
-
-export default function PetForm() {
+const PetForm = () => {
   const [petData, dispatch] = useReducer(petReducer, INITIAL_PET)
-  const { changeButtonId } = useContext(PageContext)
+  const { changeRoute } = useContext(PageContext)
   const [macroError, setMacroError] = useState<string>()
 
   const recommendedCaloricIntake = calculateCaloricIntake(petData)
-
-  function petReducer(petData: PetData, action: Action) {
-    switch (action.type) {
-      case 'changeInput': {
-        if (action.event!.target.type === 'checkbox') {
-          //@ts-expect-error
-          const { name, checked } = action.event!.target
-          return {
-            ...petData,
-            [name]: checked,
-          }
-        }
-        const { name, value } = action.event!.target
-        return { ...petData, [name]: value }
-      }
-      case 'changeNum': {
-        const { name, value } = action.event!.target
-        const numValue = Number(value)
-        if (Number.isNaN(numValue)) return petData
-        return {
-          ...petData,
-          [name]: numValue,
-        }
-      }
-      case 'changeSelect': {
-        const { name, value } = action.event!.target
-        return {
-          ...petData,
-          [name]: value,
-        }
-      }
-      case 'changeImage': {
-        return {
-          ...petData,
-          imgPath: action.path!,
-        }
-      }
-      case 'changeTextArea': {
-        const { name, value } = action.event!.target
-        return {
-          ...petData,
-          [name]: value,
-        }
-      }
-      default:
-        return petData
-    }
-  }
 
   function handleChange(event: ChangeEvent<HTMLInputElement>) {
     dispatch({
@@ -149,7 +95,7 @@ export default function PetForm() {
       ...petData,
       recommendedCaloricIntake: recommendedCaloricIntake,
     })
-    if (changeButtonId) changeButtonId(SelectedButton.SAVED_PROFILES)
+    if (changeRoute) changeRoute(Routes.SAVED_PROFILES)
   }
   return (
     <form
@@ -441,3 +387,4 @@ export default function PetForm() {
     </form>
   )
 }
+export default PetForm

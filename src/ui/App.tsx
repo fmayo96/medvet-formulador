@@ -1,31 +1,38 @@
-import "./App.css";
-import CreateProfile from "./components/CreateProfile";
-import NavBar from "./components/NavBar";
-import { useState } from "react";
-import SavedProfiles from "./components/SavedProfiles";
-import CreateRecipe from "./components/CreateRecipe";
-import { PageContext, SelectedButton } from "./store/page-context";
+import './App.css'
+import CreateProfile from './components/CreateProfile'
+import NavBar from './components/NavBar'
+import { useState } from 'react'
+import SavedProfiles from './components/SavedProfiles'
+import CreateRecipe from './components/CreateRecipe'
+import { PageContext, Routes } from './store/page-context'
+import PetProfile from './components/PetProfile'
 
-function App() {
-  const [selectedButton, setSelectedButton] = useState<SelectedButton>(
-    SelectedButton.CREATE_PROFILE,
-  );
+const App = () => {
+  const [route, setRoute] = useState<Routes>(Routes.CREATE_PROFILE)
+  const [petId, setPetId] = useState<number | undefined>(undefined)
 
-  function handleSelectButton(buttonId: SelectedButton) {
-    setSelectedButton(buttonId);
-  }
+  let content = <CreateProfile />
 
-  let content = <CreateProfile />;
-  if (selectedButton === SelectedButton.SAVED_PROFILES) {
-    content = <SavedProfiles />;
-  } else if (selectedButton === SelectedButton.CREATE_RECIPE) {
-    content = <CreateRecipe />;
+  switch (route) {
+    case Routes.SAVED_PROFILES:
+      content = <SavedProfiles />
+      break
+    case Routes.CREATE_RECIPE:
+      content = <CreateRecipe />
+      break
+    case Routes.PET_PROFILE:
+      content = <PetProfile petId={petId} />
+      break
+    default:
+      break
   }
 
   const ctxValue = {
-    buttonId: selectedButton,
-    changeButtonId: handleSelectButton,
-  };
+    route: route,
+    changeRoute: (route: Routes) => setRoute(route),
+    petId: petId,
+    changePetId: (id: number | undefined) => setPetId(id),
+  }
 
   return (
     <PageContext value={ctxValue}>
@@ -34,6 +41,6 @@ function App() {
         {content}
       </main>
     </PageContext>
-  );
+  )
 }
-export default App;
+export default App

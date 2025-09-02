@@ -1,10 +1,10 @@
 import Card from './Card'
 
 interface Props {
-  pets: PetDTO[] | undefined
+  pets: PetInfo[] | undefined
 }
 
-export default function CardsGrid({ pets }: Props) {
+const CardsGrid = ({ pets }: Props) => {
   return (
     <>
       {pets?.length === 0 ? (
@@ -21,3 +21,4 @@ export default function CardsGrid({ pets }: Props) {
     </>
   )
 }
+export default CardsGrid

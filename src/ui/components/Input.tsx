@@ -1,18 +1,12 @@
 type InputProps = {
-  type: "text" | "number" | "checkbox";
-  name: string;
-  value: string | number | boolean;
-  label: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-};
+  type: 'text' | 'number' | 'checkbox'
+  name: string
+  value: string | number | boolean
+  label: string
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
+}
 
-export default function Input({
-  type,
-  name,
-  value,
-  label,
-  onChange,
-}: InputProps) {
+const Input = ({ type, name, value, label, onChange }: InputProps) => {
   let content = (
     <input
       type="text"
@@ -23,10 +17,10 @@ export default function Input({
       autoComplete="off"
       className="border-slate-800 border-1 py-1 px-2 rounded-md focus:outline-none"
     />
-  );
+  )
 
   switch (type) {
-    case "number":
+    case 'number':
       content = (
         <input
           type="text"
@@ -37,9 +31,9 @@ export default function Input({
           autoComplete="off"
           className="border-slate-800 border-1 py-1 px-2 rounded-md focus:outline-none"
         />
-      );
-      break;
-    case "checkbox":
+      )
+      break
+    case 'checkbox':
       content = (
         <input
           type="checkbox"
@@ -49,20 +43,21 @@ export default function Input({
           onChange={onChange}
           className="w-5 h-5 accent-sky-700"
         />
-      );
-      break;
+      )
+      break
     default:
-      break;
+      break
   }
 
-  let cssClasses = "flex flex-col gap-1";
-  if (type === "checkbox") {
-    cssClasses += " items-center mb-4";
+  let cssClasses = 'flex flex-col gap-1'
+  if (type === 'checkbox') {
+    cssClasses += ' items-center mb-4'
   }
   return (
     <div className={cssClasses}>
       <label className="text-lg">{label}</label>
       {content}
     </div>
-  );
+  )
 }
+export default Input

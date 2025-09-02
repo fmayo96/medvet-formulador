@@ -2,7 +2,7 @@ import Page from './Page'
 import PetForm from './PetForm'
 import Title from './Title'
 
-export default function CreateProfile() {
+const CreateProfile = () => {
   return (
     <Page>
       <Title content="Crear Perfil" />
@@ -10,3 +10,4 @@ export default function CreateProfile() {
     </Page>
   )
 }
+export default CreateProfile

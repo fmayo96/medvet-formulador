@@ -1,36 +1,36 @@
-import { useEffect, useState, useContext, type ChangeEvent } from "react";
-import Title from "./Title";
-import Page from "./Page";
-import CardsGrid from "./CardsGrid";
-import Search from "./Search";
-import Button from "./Button";
-import { PageContext, SelectedButton } from "../store/page-context";
+import { useEffect, useState, useContext, type ChangeEvent } from 'react'
+import Title from './Title'
+import Page from './Page'
+import CardsGrid from './CardsGrid'
+import Search from './Search'
+import Button from './Button'
+import { PageContext, Routes } from '../store/page-context'
 
-export default function SavedProfiles() {
-  const [pets, setPets] = useState<PetDTO[]>();
-  const [search, setSearch] = useState("");
+const SavedProfiles = () => {
+  const [pets, setPets] = useState<PetInfo[]>()
+  const [search, setSearch] = useState('')
   const filteredPets = pets?.filter((p) =>
-    p.name.toLowerCase().includes(search.toLowerCase()),
-  );
-  const { changeButtonId } = useContext(PageContext);
+    p.name.toLowerCase().includes(search.toLowerCase())
+  )
+  const { changeRoute } = useContext(PageContext)
 
   async function getPets() {
-    const allPets = await window.electron.getAllPets();
-    setPets(allPets);
+    const allPets = await window.electron.getAllPets()
+    setPets(allPets)
   }
 
   function handleSearch(event: ChangeEvent<HTMLInputElement>) {
-    const newSearch = event.target.value;
-    setSearch(newSearch);
+    const newSearch = event.target.value
+    setSearch(newSearch)
   }
 
   function handleCreateProfile() {
-    changeButtonId!(SelectedButton.CREATE_PROFILE);
+    changeRoute!(Routes.CREATE_PROFILE)
   }
 
   useEffect(() => {
-    getPets();
-  }, []);
+    getPets()
+  }, [])
 
   return (
     <Page>
@@ -47,5 +47,6 @@ export default function SavedProfiles() {
       </div>
       <CardsGrid pets={filteredPets} />
     </Page>
-  );
+  )
 }
+export default SavedProfiles

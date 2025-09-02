@@ -3,6 +3,7 @@ import { db } from '../main.js'
 import path from 'path'
 import { promises as fs } from 'fs'
 import { app } from 'electron'
+import { eq } from 'drizzle-orm'
 
 export async function savePetProfile(pet: PetData) {
   if (pet.imgPath === null) {
@@ -64,6 +65,20 @@ export async function savePetProfile(pet: PetData) {
 }
 
 export async function getAllPets() {
-  const pets = await db.select().from(petsTable)
-  return pets as PetDTO[]
+  const pets = await db
+    .select({
+      id: petsTable.id,
+      name: petsTable.name,
+      imgPath: petsTable.imgPath,
+      age: petsTable.age,
+      weight: petsTable.weight,
+      species: petsTable.species,
+    })
+    .from(petsTable)
+  return pets as PetInfo[]
+}
+
+export async function getPetById(id: number) {
+  const pet = await db.select().from(petsTable).where(eq(petsTable.id, id))
+  return pet as PetDTO[]
 }
