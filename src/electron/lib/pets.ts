@@ -1,21 +1,44 @@
-import { petsTable } from "../db/schema.js";
-import { db } from "../main.js";
-import path from "path";
-import { promises as fs } from "fs";
-import { app } from "electron";
+import { petsTable } from '../db/schema.js'
+import { db } from '../main.js'
+import path from 'path'
+import { promises as fs } from 'fs'
+import { app } from 'electron'
 
 export async function savePetProfile(pet: PetData) {
-  const sourcePath = pet.imgPath!;
-  const extension = pet.imgPath!.split(".").pop();
-  const destFileName = `${pet.name.toLowerCase()}.${extension}`;
-  const destFolder = path.join(app.getPath("userData"), "images");
-  const destPath = path.join(app.getPath("userData"), "images", destFileName);
+  if (pet.imgPath === null) {
+    const newPet: typeof petsTable.$inferInsert = {
+      name: pet.name,
+      age: pet.age,
+      imgPath: null,
+      weight: pet.weight,
+      adultWeight: pet.adultWeight,
+      recommendedCaloricIntake: pet.recommendedCaloricIntake,
+      useRecommendedCaloricIntake: pet.useRecommendedCaloricIntake,
+      customCaloricIntake: pet.customCaloricIntake,
+      species: pet.species,
+      estimatedEnergyFactor: pet.estimatedEnergyFactor,
+      numCachorros: pet.numCachorros,
+      lactancyWeek: pet.lactancyWeek,
+      isCatOverweight: pet.isCatOverweight,
+      isIdealWeight: pet.isIdealWeight,
+      idealWeight: pet.idealWeight,
+      hasBlackFurr: pet.hasBlackFurr,
+      otherNotes: pet.otherNotes,
+    }
+
+    await db.insert(petsTable).values(newPet)
+  }
+  const sourcePath = pet.imgPath!
+  const extension = pet.imgPath!.split('.').pop()
+  const destFileName = `${pet.name.toLowerCase()}.${extension}`
+  const destFolder = path.join(app.getPath('userData'), 'images')
+  const destPath = path.join(app.getPath('userData'), 'images', destFileName)
 
   try {
-    fs.mkdir(destFolder, { recursive: true });
-    await fs.copyFile(sourcePath, destPath);
+    fs.mkdir(destFolder, { recursive: true })
+    await fs.copyFile(sourcePath, destPath)
   } catch (error) {
-    console.error(error);
+    console.error(error)
   }
   const newPet: typeof petsTable.$inferInsert = {
     name: pet.name,
@@ -35,12 +58,12 @@ export async function savePetProfile(pet: PetData) {
     idealWeight: pet.idealWeight,
     hasBlackFurr: pet.hasBlackFurr,
     otherNotes: pet.otherNotes,
-  };
+  }
 
-  await db.insert(petsTable).values(newPet);
+  await db.insert(petsTable).values(newPet)
 }
 
 export async function getAllPets() {
-  const pets = await db.select().from(petsTable);
-  return pets as PetDTO[];
+  const pets = await db.select().from(petsTable)
+  return pets as PetDTO[]
 }

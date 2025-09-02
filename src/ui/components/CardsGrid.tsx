@@ -1,7 +1,7 @@
-import Card from "./Card";
+import Card from './Card'
 
 interface Props {
-  pets: PetDTO[] | undefined;
+  pets: PetDTO[] | undefined
 }
 
 export default function CardsGrid({ pets }: Props) {
@@ -9,7 +9,7 @@ export default function CardsGrid({ pets }: Props) {
     <>
       {pets?.length === 0 ? (
         <p className="text-slate-400 font-semibold">
-          No hay perfiles guardados.
+          No se encontraron perfiles.
         </p>
       ) : (
         <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-4">
@@ -19,5 +19,5 @@ export default function CardsGrid({ pets }: Props) {
         </div>
       )}
     </>
-  );
+  )
 }
