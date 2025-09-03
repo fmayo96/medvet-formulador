@@ -1,7 +1,7 @@
-import Card from './Card'
+import Card from "./Card";
 
 interface Props {
-  pets: PetInfo[] | undefined
+  pets: PetInfo[] | undefined;
 }
 
 const CardsGrid = ({ pets }: Props) => {
@@ -12,13 +12,16 @@ const CardsGrid = ({ pets }: Props) => {
           No se encontraron perfiles.
         </p>
       ) : (
-        <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-4">
+        <div
+          className="w-full grid grid-cols-1 py-4 lg:grid-cols-2 gap-4 overflow-auto"
+          style={{ scrollbarWidth: "none" }}
+        >
           {pets?.map((p) => (
             <Card pet={p} />
           ))}
         </div>
       )}
     </>
-  )
-}
-export default CardsGrid
+  );
+};
+export default CardsGrid;
