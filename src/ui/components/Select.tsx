@@ -10,7 +10,7 @@ type Species =
 
 type InputProps = {
   name: string
-  value: number | Species
+  value: number | Species | string
   label: string
   children: React.ReactNode
   onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void
