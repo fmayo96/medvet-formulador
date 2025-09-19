@@ -1,7 +1,6 @@
 export const STANDARDS = {
   recommended: {
-    "NRC Perro Adulto": {
-      Standard: 130.0,
+    "Perro Adulto": {
       Protein: 3.28,
       Tryptophan: 0.046,
       Threonine: 0.14,
@@ -50,8 +49,7 @@ export const STANDARDS = {
       "Vitamin D3 (cholecalciferol)": 0.45,
       "Vitamin K (phylloquinone)": 54.0,
     },
-    "NRC Gato Adulto": {
-      Standard: 100.0,
+    "Gato Adulto": {
       Protein: 4.96,
       Tryptophan: 0.032,
       Threonine: 0.13,
@@ -100,8 +98,7 @@ export const STANDARDS = {
       "Vitamin D3 (cholecalciferol)": 0.17,
       "Vitamin K (phylloquinone)": 25.0,
     },
-    "NRC Perro Cachorro": {
-      Standard: 130.0,
+    "Perro Cachorro": {
       Protein: 12.2,
       Tryptophan: 0.13,
       Threonine: 0.44,
@@ -150,8 +147,7 @@ export const STANDARDS = {
       "Vitamin D3 (cholecalciferol)": 0.76,
       "Vitamin K (phylloquinone)": 110.0,
     },
-    "NRC Perra Preñada": {
-      Standard: 130.0,
+    "Perra Preñada": {
       Protein: 24.6,
       Tryptophan: 0.15,
       Threonine: 1.28,
@@ -200,8 +196,7 @@ export const STANDARDS = {
       "Vitamin D3 (cholecalciferol)": 1.35,
       "Vitamin K (phylloquinone)": 160.0,
     },
-    "NRC Perra Lactancia": {
-      Standard: 130.0,
+    "Perra Lactancia": {
       Protein: 24.6,
       Tryptophan: 0.15,
       Threonine: 1.28,
@@ -250,8 +245,7 @@ export const STANDARDS = {
       "Vitamin D3 (cholecalciferol)": 1.35,
       "Vitamin K (phylloquinone)": 160.0,
     },
-    "NRC Gato Cachorro": {
-      Standard: 100.0,
+    "Gato Cachorro": {
       Protein: 11.8,
       Tryptophan: 0.084,
       Threonine: 0.33,
@@ -300,8 +294,7 @@ export const STANDARDS = {
       "Vitamin D3 (cholecalciferol)": 0.29,
       "Vitamin K (phylloquinone)": 50.0,
     },
-    "NRC Gata Preñada": {
-      Standard: 100.0,
+    "Gata Preñada": {
       Protein: 7.4,
       Tryptophan: 0.066,
       Threonine: 0.31,
@@ -350,8 +343,7 @@ export const STANDARDS = {
       "Vitamin D3 (cholecalciferol)": 0.3,
       "Vitamin K (phylloquinone)": 180.0,
     },
-    "NRC Gata Lactancia": {
-      Standard: 100.0,
+    "Gata Lactancia": {
       Protein: 16.1,
       Tryptophan: 0.1,
       Threonine: 0.58,
@@ -402,8 +394,7 @@ export const STANDARDS = {
     },
   },
   safeUpperLimit: {
-    "NRC Perro Adulto.1": {
-      Standard: 130.0,
+    "Perro Adulto": {
       Protein: null,
       Tryptophan: null,
       Threonine: null,
@@ -452,8 +443,7 @@ export const STANDARDS = {
       "Vitamin D3 (cholecalciferol)": 2.6,
       "Vitamin K (phylloquinone)": null,
     },
-    "NRC Gato Adulto.1": {
-      Standard: 100.0,
+    "Gato Adulto": {
       Protein: null,
       Tryptophan: null,
       Threonine: null,
@@ -502,8 +492,7 @@ export const STANDARDS = {
       "Vitamin D3 (cholecalciferol)": 19.0,
       "Vitamin K (phylloquinone)": null,
     },
-    "NRC Perro Cachorro.1": {
-      Standard: 130.0,
+    "Perro Cachorro": {
       Protein: null,
       Tryptophan: null,
       Threonine: null,
@@ -552,8 +541,7 @@ export const STANDARDS = {
       "Vitamin D3 (cholecalciferol)": 5.6,
       "Vitamin K (phylloquinone)": null,
     },
-    "NRC Perra Preñada.1": {
-      Standard: 130.0,
+    "Perra Preñada": {
       Protein: null,
       Tryptophan: null,
       Threonine: null,
@@ -602,8 +590,7 @@ export const STANDARDS = {
       "Vitamin D3 (cholecalciferol)": 9.8,
       "Vitamin K (phylloquinone)": null,
     },
-    "NRC Perra Lactancia.1": {
-      Standard: 130.0,
+    "Perra Lactancia": {
       Protein: null,
       Tryptophan: null,
       Threonine: null,
@@ -652,8 +639,7 @@ export const STANDARDS = {
       "Vitamin D3 (cholecalciferol)": 9.8,
       "Vitamin K (phylloquinone)": null,
     },
-    "NRC Gato Cachorro.1": {
-      Standard: 100.0,
+    "Gato Cachorro": {
       Protein: null,
       Tryptophan: null,
       Threonine: null,
@@ -702,8 +688,7 @@ export const STANDARDS = {
       "Vitamin D3 (cholecalciferol)": 39.0,
       "Vitamin K (phylloquinone)": null,
     },
-    "NRC Gata Preñada.1": {
-      Standard: 100.0,
+    "Gata Preñada": {
       Protein: null,
       Tryptophan: null,
       Threonine: null,
@@ -752,8 +737,7 @@ export const STANDARDS = {
       "Vitamin D3 (cholecalciferol)": 40.0,
       "Vitamin K (phylloquinone)": null,
     },
-    "NRC Gata Lactancia.1": {
-      Standard: 100.0,
+    "Gata Lactancia": {
       Protein: null,
       Tryptophan: null,
       Threonine: null,
