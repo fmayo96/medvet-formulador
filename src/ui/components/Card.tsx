@@ -1,6 +1,9 @@
 import { useContext } from 'react'
 import { PageContext, Routes } from '../store'
+import dogImg from '../assets/dog_default.png'
+import catImg from '../assets/cat_default.jpg'
 const reCachorro = /Cachorro/
+const rePerro = /Perr/
 interface CardProps {
   pet: PetInfo
 }
@@ -19,15 +22,28 @@ const Card = ({ pet }: CardProps) => {
       className="flex gap-8  rounded-sm p-4 shadow-slate-300 hover:shadow-slate-500 shadow-sm hover:cursor-pointer mx-4 px-8"
       onClick={handleClick}
     >
-      {pet.imgPath && (
-        <div className="w-25 h-25 overflow-hidden rounded-full">
+      <div className="w-25 h-25 overflow-hidden rounded-full">
+        {pet.imgPath ?
           <img
             src={`file://${pet.imgPath}`}
             alt="pet image"
             className="w-full h-full object-cover"
-          />
-        </div>
-      )}
+          /> : (
+
+            rePerro.test(pet.species) ? <img
+              src={dogImg}
+              alt="default dog image"
+              className="w-full h-full object-cover"
+            /> :
+              <img
+                src={catImg}
+                alt="default cat image"
+
+                className="w-full h-full object-cover"
+              />
+
+          )}
+      </div>
       <div className="flex flex-col">
         <p className="text-xl font-semibold">{pet.name}</p>
         <p className="text-lg">

@@ -1,10 +1,13 @@
-import { useEffect, useState } from "react"
-import Page from "./Page"
-import Title from "./Title"
-
+import { useEffect, useState } from 'react'
+import Page from './Page'
+import Title from './Title'
+import dogImg from '../assets/dog_default.png'
+import catImg from '../assets/cat_default.jpg'
 interface Props {
   petId: number | undefined
 }
+
+const rePerro = /Perr/
 
 const PetProfile = ({ petId }: Props) => {
   const [pet, setPet] = useState<PetDTO | null>()
@@ -29,9 +32,18 @@ const PetProfile = ({ petId }: Props) => {
         <p>Error: pet ID not found</p>
       ) : (
         <div>
-          <img src={`FILE://${pet.imgPath}`} alt={`imagen de ${pet.name}`} />
+          {pet.imgPath ? (
+            <img src={`FILE://${pet.imgPath}`} alt={`imagen de ${pet.name}`} />
+          ) : rePerro.test(pet.species) ? (
+            <img src={dogImg} alt="default dog image" />
+          ) : (
+            <img src={catImg} alt="default cat image" />
+          )}
         </div>
       )}
+      <p>
+        Weight: {pet?.weight}, Metabolic Weight: {pet?.metabolicWeight}
+      </p>
     </Page>
   )
 }

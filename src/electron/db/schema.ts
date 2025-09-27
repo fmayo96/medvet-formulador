@@ -1,24 +1,25 @@
-import { int, sqliteTable, text } from "drizzle-orm/sqlite-core";
+import { int, real, sqliteTable, text } from 'drizzle-orm/sqlite-core'
 
-export const petsTable = sqliteTable("pets_table", {
+export const petsTable = sqliteTable('pets_table', {
   id: int().primaryKey({ autoIncrement: true }),
   name: text().notNull(),
   imgPath: text(),
   age: int().notNull(),
-  weight: int().notNull(),
+  weight: real().notNull(),
+  metabolicWeight: real().notNull(),
   adultWeight: int().notNull(),
   species: text().notNull(),
   numCachorros: int().notNull(),
   lactancyWeek: int(),
-  hasBlackFurr: int("has_black_furr", { mode: "boolean" }).notNull(),
-  isCatOverweight: int("is_cat_overweight", { mode: "boolean" }),
+  hasBlackFurr: int('has_black_furr', { mode: 'boolean' }).notNull(),
+  isCatOverweight: int('is_cat_overweight', { mode: 'boolean' }),
   estimatedEnergyFactor: int().notNull(),
-  isIdealWeight: int("is_ideal_weight", { mode: "boolean" }).notNull(),
+  isIdealWeight: int('is_ideal_weight', { mode: 'boolean' }).notNull(),
   idealWeight: int().notNull(),
-  useRecommendedCaloricIntake: int("use_recommended_caloric_intake", {
-    mode: "boolean",
+  useRecommendedCaloricIntake: int('use_recommended_caloric_intake', {
+    mode: 'boolean',
   }).notNull(),
   recommendedCaloricIntake: int().notNull(),
   customCaloricIntake: int().notNull(),
   otherNotes: text(),
-});
+})

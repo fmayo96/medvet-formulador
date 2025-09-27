@@ -1,26 +1,28 @@
-import { useReducer, useContext, useState } from "react";
-import type { ChangeEvent, MouseEvent } from "react";
-import Input from "./Input";
-import Select from "./Select";
-import Button from "./Button";
-import { PageContext, Routes } from "../store";
+import { useReducer, useContext, useState } from 'react'
+import type { ChangeEvent, MouseEvent } from 'react'
+import Input from './Input'
+import Select from './Select'
+import Button from './Button'
+import { PageContext, Routes } from '../store'
 import {
   petReducer,
   validateMacronutrients,
   calculateCaloricIntake,
-} from "../lib";
+  calculateMetabolicWeight,
+} from '../lib'
 
-const reGato = /Gat/;
-const reLact = /Lactancia/;
-const reCachorro = /Cachorro/;
+const reGato = /Gat/
+const reLact = /Lactancia/
+const reCachorro = /Cachorro/
 
 const INITIAL_PET: PetData = {
-  name: "",
+  name: '',
   imgPath: null,
   age: 0,
   weight: 0,
+  metabolicWeight: 0,
   adultWeight: 0,
-  species: "Perro Adulto",
+  species: 'Perro Adulto',
   numCachorros: 0,
   lactancyWeek: 1,
   hasBlackFurr: false,
@@ -35,75 +37,77 @@ const INITIAL_PET: PetData = {
   fat: 30,
   carbs: 30,
   fiber: 3,
-  otherNotes: "",
-};
+  otherNotes: '',
+}
 
 const PetForm = () => {
-  const [petData, dispatch] = useReducer(petReducer, INITIAL_PET);
-  const { changeRoute } = useContext(PageContext);
-  const [macroError, setMacroError] = useState<string>();
+  const [petData, dispatch] = useReducer(petReducer, INITIAL_PET)
+  const { changeRoute } = useContext(PageContext)
+  const [macroError, setMacroError] = useState<string>()
 
-  const recommendedCaloricIntake = calculateCaloricIntake(petData);
+  const recommendedCaloricIntake = calculateCaloricIntake(petData)
+  const metabolicWeight = calculateMetabolicWeight(petData)
 
   function handleChange(event: ChangeEvent<HTMLInputElement>) {
     dispatch({
-      type: "changeInput",
+      type: 'changeInput',
       event: event,
-    });
+    })
   }
 
   function handleTextAreaChange(event: ChangeEvent<HTMLTextAreaElement>) {
     dispatch({
-      type: "changeTextArea",
+      type: 'changeTextArea',
       event: event,
-    });
+    })
   }
 
   function handleNumChange(event: ChangeEvent<HTMLInputElement>) {
     dispatch({
-      type: "changeNum",
+      type: 'changeNum',
       event: event,
-    });
+    })
   }
 
   function handleSelectChange(event: ChangeEvent<HTMLSelectElement>) {
     dispatch({
-      type: "changeSelect",
+      type: 'changeSelect',
       event: event,
-    });
+    })
   }
 
   async function handleImageClick(event: MouseEvent<HTMLButtonElement>) {
-    event.preventDefault();
-    const path = await window.electron.pickPhoto();
-    if (path === null) return;
+    event.preventDefault()
+    const path = await window.electron.pickPhoto()
+    if (path === null) return
     dispatch({
-      type: "changeImage",
+      type: 'changeImage',
       path: path,
-    });
+    })
   }
   async function handleSubmit(event: MouseEvent<HTMLButtonElement>) {
-    event.preventDefault();
-    setMacroError(undefined);
+    event.preventDefault()
+    setMacroError(undefined)
     if (!validateMacronutrients(petData)) {
       setMacroError(
-        "Los porcentajes de proteina, grasa y carbohidratos deben sumar 100.",
-      );
-      return;
+        'Los porcentajes de proteina, grasa y carbohidratos deben sumar 100.'
+      )
+      return
     }
     await window.electron.submit({
       ...petData,
       recommendedCaloricIntake: recommendedCaloricIntake,
-    });
-    if (changeRoute) changeRoute(Routes.SAVED_PROFILES);
+      metabolicWeight: metabolicWeight,
+    })
+    if (changeRoute) changeRoute(Routes.SAVED_PROFILES)
   }
   return (
     <form
       className="flex flex-col w-full overflow-auto"
-      style={{ scrollbarWidth: "none" }}
+      style={{ scrollbarWidth: 'none' }}
       onKeyDown={(e) => {
-        if (e.key === "Enter") {
-          e.preventDefault(); // stop form submission
+        if (e.key === 'Enter') {
+          e.preventDefault() // stop form submission
         }
       }}
     >
@@ -140,7 +144,7 @@ const PetForm = () => {
         />
         <Input
           label={
-            reCachorro.test(petData.species) ? "Edad (meses)" : "Edad (años)"
+            reCachorro.test(petData.species) ? 'Edad (meses)' : 'Edad (años)'
           }
           name="age"
           value={petData.age}
@@ -183,7 +187,7 @@ const PetForm = () => {
         ) : (
           <p></p>
         )}
-        {petData.species === "Perra Lactancia" && (
+        {petData.species === 'Perra Lactancia' && (
           <Select
             label="Semana de lactancia"
             name="lactancyWeek"
@@ -196,7 +200,7 @@ const PetForm = () => {
             <option value={4}>4</option>
           </Select>
         )}
-        {petData.species === "Gata Lactancia" && (
+        {petData.species === 'Gata Lactancia' && (
           <Select
             label="Semana de lactancia"
             name="lactancyWeek"
@@ -272,7 +276,7 @@ const PetForm = () => {
             Objetivos de Macronutrientes
           </h2>
           <div className="flex justify-between">
-            <label className="text-lg">Proteina:</label>{" "}
+            <label className="text-lg">Proteina:</label>{' '}
             <div className="flex">
               <input
                 type="text"
@@ -296,7 +300,7 @@ const PetForm = () => {
             className="bg-transparent accent-sky-600"
           />
           <div className="flex justify-between">
-            <label className="text-lg">Grasa:</label>{" "}
+            <label className="text-lg">Grasa:</label>{' '}
             <div className="flex">
               <input
                 type="text"
@@ -320,7 +324,7 @@ const PetForm = () => {
             className="bg-transparent accent-sky-600"
           />
           <div className="flex justify-between">
-            <label className="text-lg">Carbohidratos:</label>{" "}
+            <label className="text-lg">Carbohidratos:</label>{' '}
             <input
               type="text"
               name="carbs"
@@ -342,7 +346,7 @@ const PetForm = () => {
             className="bg-transparent accent-sky-600"
           />
           <div className="flex justify-between">
-            <label className="text-lg">Fibra (%DMB):</label>{" "}
+            <label className="text-lg">Fibra (%DMB):</label>{' '}
             <input
               type="text"
               name="fiber"
@@ -399,6 +403,6 @@ const PetForm = () => {
         </Button>
       </div>
     </form>
-  );
-};
-export default PetForm;
+  )
+}
+export default PetForm
