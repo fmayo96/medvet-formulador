@@ -5,9 +5,9 @@ import { PageContext, Routes } from '../store/page-context'
 
 const NavBar = () => {
   const pages: { id: Routes; name: string }[] = [
-    { id: Routes.CREATE_PROFILE, name: 'Crear Perfil' },
-    { id: Routes.SAVED_PROFILES, name: 'Perfiles Guardados' },
-    { id: Routes.CREATE_RECIPE, name: 'Crear Receta' },
+    { id: Routes.CREATE_PROFILE, name: 'Crear perfil' },
+    { id: Routes.SAVED_PROFILES, name: 'Perfiles guardados' },
+    { id: Routes.CREATE_RECIPE, name: 'Crear receta' },
   ]
 
   const { route, changeRoute } = useContext(PageContext)

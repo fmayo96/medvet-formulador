@@ -4,6 +4,8 @@ import Page from './Page'
 import Title from './Title'
 import Select from './Select'
 import { STANDARDS } from '../data/standards_es'
+import { FOOD_DB } from '../data/food_db'
+import { MACROS } from '../data/macros'
 import SmallCard from './SmallCard'
 
 interface Food {
@@ -17,7 +19,13 @@ interface Recipe {
   date: Date
 }
 
+type STANDARD_ENTRIES = keyof (typeof STANDARDS.recomendado)['Perro Adulto']
+
 const INIT_TOTAL = Object.fromEntries(
+  Object.keys(STANDARDS.recomendado['Perro Adulto']).map((k) => [k, 0])
+)
+
+let REQUIREMENTS = Object.fromEntries(
   Object.keys(STANDARDS.recomendado['Perro Adulto']).map((k) => [k, 0])
 )
 
@@ -31,14 +39,31 @@ const CreateRecipe = () => {
   })
   const [total, setTotal] = useState(INIT_TOTAL)
 
-  const requirements = selectedPet
-    ? STANDARDS.recomendado[selectedPet?.species]
-    : null
+  function calculateRequirements(selectedPet: PetDTO) {
+    for (let key in STANDARDS.recomendado[selectedPet.species]) {
+      let req =
+        STANDARDS.recomendado[selectedPet.species][key as STANDARD_ENTRIES]
+          .cantidad
+
+      if (req !== null) {
+        if (
+          STANDARDS.recomendado[selectedPet.species][key as STANDARD_ENTRIES]
+            .unidad !== null
+        ) {
+          REQUIREMENTS[key as STANDARD_ENTRIES] =
+            req * selectedPet.metabolicWeight
+        } else {
+          REQUIREMENTS[key as STANDARD_ENTRIES] = req
+        }
+      }
+    }
+  }
 
   async function getPets() {
     const allPets = await window.electron.getAllPets()
     setPets(allPets)
     if (allPets.length > 0) setSelectedPet(allPets[0])
+    calculateRequirements(allPets[0])
   }
 
   function handleSelect(e: ChangeEvent<HTMLSelectElement>) {
@@ -48,7 +73,13 @@ const CreateRecipe = () => {
       [name]: value,
     }))
     const selectedPet = pets?.find((p) => p.name === value)
-    setSelectedPet(selectedPet)
+    if (selectedPet) {
+      setSelectedPet(selectedPet)
+      calculateRequirements(selectedPet)
+      //@ts-expect-error
+      REQUIREMENTS['Carbohidratos, por diferencia'] =
+        (selectedPet.recommendedCaloricIntake * selectedPet.carbs) / 400.0
+    }
   }
 
   useEffect(() => {
@@ -57,12 +88,12 @@ const CreateRecipe = () => {
 
   return (
     <Page>
-      <Title content="Crear Receta" />
+      <Title content="Crear receta" />
       <div className="grid grid-cols-[1fr_2fr] gap-8 w-full h-screen">
-        <div className="flex flex-col items-center my-4">
+        <div className="flex flex-col items-center my-4 gap-4">
           <div className="flex flex-col gap-2">
             <Select
-              label="Nombre del Animal"
+              label="Nombre del animal"
               name="petName"
               value={recipe.petName}
               onChange={handleSelect}
@@ -74,6 +105,15 @@ const CreateRecipe = () => {
             </Select>
             {selectedPet && <SmallCard pet={selectedPet} />}
           </div>
+          <select
+            name="food"
+            id="food"
+            className="w-full bg-white border-1 border-slate-800 rounded-md py-1"
+          >
+            {FOOD_DB.map((f) => (
+              <option className="w-12">{f['Item Name']}</option>
+            ))}
+          </select>
         </div>
 
         <div
@@ -92,28 +132,25 @@ const CreateRecipe = () => {
                 </tr>
               </thead>
               <tr className="text-end">
-                <td className="text-start">Energía</td>
-                <td>{selectedPet.recommendedCaloricIntake} kcal</td>
+                <td className="text-start">Energía kcal</td>
+                <td>{selectedPet.recommendedCaloricIntake} </td>
                 <td>0</td>
                 <td>0</td>
               </tr>
-              {Object.entries(requirements!)
-                .filter(([_, v]) => v.cantidad !== null)
-                .map(([k, v]) => (
-                  <tr className="text-end">
-                    <td className="text-start">{k}</td>
-                    <td>
-                      {v.unidad
-                        ? (v.cantidad! * selectedPet?.metabolicWeight).toFixed(
-                            2
-                          )
-                        : v.cantidad?.toFixed(2)}{' '}
-                      {v.unidad}
-                    </td>
-                    <td>{total[k]}</td>
-                    <td>{(total[k] / v.cantidad!) * 100}</td>
-                  </tr>
-                ))}
+              {MACROS.map((m) => (
+                <tr className="text-end h-4">
+                  <td className={`text-start ${m.bold && 'font-bold'}`}>
+                    {m.mostrar ? m.mostrar : m.nombre} {m.unidad && m.unidad}
+                  </td>
+                  <td>
+                    {REQUIREMENTS[m.nombre]
+                      ? REQUIREMENTS[m.nombre].toFixed(2)
+                      : ' '}
+                  </td>
+                  <td>{m.nombre === ' ' ? ' ' : 0}</td>
+                  <td>{m.nombre === ' ' ? ' ' : 0}</td>
+                </tr>
+              ))}
             </table>
           )}
         </div>

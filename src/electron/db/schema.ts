@@ -16,10 +16,9 @@ export const petsTable = sqliteTable('pets_table', {
   estimatedEnergyFactor: int().notNull(),
   isIdealWeight: int('is_ideal_weight', { mode: 'boolean' }).notNull(),
   idealWeight: int().notNull(),
-  useRecommendedCaloricIntake: int('use_recommended_caloric_intake', {
-    mode: 'boolean',
-  }).notNull(),
   recommendedCaloricIntake: int().notNull(),
-  customCaloricIntake: int().notNull(),
+  protein: int().notNull(),
+  fat: int().notNull(),
+  carbs: int().notNull(),
   otherNotes: text(),
 })

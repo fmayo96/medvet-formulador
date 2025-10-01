@@ -103,15 +103,15 @@ const PetForm = () => {
   }
   return (
     <form
-      className="flex flex-col w-full overflow-auto"
-      style={{ scrollbarWidth: 'none' }}
+      className="flex flex-col w-full px-4 overflow-auto"
+      //style={{ scrollbarWidth: 'none' }}
       onKeyDown={(e) => {
         if (e.key === 'Enter') {
           e.preventDefault() // stop form submission
         }
       }}
     >
-      <h2 className="text-xl my-8 self-center font-medium">Datos del Animal</h2>
+      <h2 className="text-xl my-8 self-center font-medium">Datos del animal</h2>
       <div className="grid grid-cols-4 gap-8 mb-8">
         <Input
           type="text"
@@ -221,7 +221,7 @@ const PetForm = () => {
       <div className="grid grid-cols-[3fr_1fr] gap-8">
         <div className="flex flex-col">
           <h2 className="text-xl mt-4 mb-8 self-center font-medium">
-            Requerimientos Energéticos
+            Requerimientos energéticos
           </h2>
           <div className="grid grid-cols-2 gap-4">
             <Input
@@ -246,9 +246,7 @@ const PetForm = () => {
               onChange={handleChange}
             />
             <div className="flex flex-col gap-1">
-              <label className="text-lg">
-                Ingesta calórica recomendada (kcal)
-              </label>
+              <label className="text-lg">Ingesta calórica (kcal)</label>
               <p className="border-1 border-slate-800 py-1 px-2 rounded-md bg-slate-200">
                 {recommendedCaloricIntake}
               </p>
@@ -273,7 +271,7 @@ const PetForm = () => {
         </div>
         <div className="flex flex-col gap-2">
           <h2 className="text-xl mt-4 mb-8 self-center font-medium">
-            Objetivos de Macronutrientes
+            Objetivos de macronutrientes
           </h2>
           <div className="flex justify-between">
             <label className="text-lg">Proteina:</label>{' '}

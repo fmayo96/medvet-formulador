@@ -14,9 +14,9 @@ export async function savePetProfile(pet: PetData) {
       weight: pet.weight,
       metabolicWeight: pet.metabolicWeight,
       adultWeight: pet.adultWeight,
-      recommendedCaloricIntake: pet.recommendedCaloricIntake,
-      useRecommendedCaloricIntake: pet.useRecommendedCaloricIntake,
-      customCaloricIntake: pet.customCaloricIntake,
+      recommendedCaloricIntake: pet.useRecommendedCaloricIntake
+        ? pet.recommendedCaloricIntake
+        : pet.customCaloricIntake,
       species: pet.species,
       estimatedEnergyFactor: pet.estimatedEnergyFactor,
       numCachorros: pet.numCachorros,
@@ -25,6 +25,9 @@ export async function savePetProfile(pet: PetData) {
       isIdealWeight: pet.isIdealWeight,
       idealWeight: pet.idealWeight,
       hasBlackFurr: pet.hasBlackFurr,
+      protein: pet.protein,
+      fat: pet.fat,
+      carbs: pet.carbs,
       otherNotes: pet.otherNotes,
     }
 
@@ -50,8 +53,6 @@ export async function savePetProfile(pet: PetData) {
       metabolicWeight: pet.metabolicWeight,
       adultWeight: pet.adultWeight,
       recommendedCaloricIntake: pet.recommendedCaloricIntake,
-      useRecommendedCaloricIntake: pet.useRecommendedCaloricIntake,
-      customCaloricIntake: pet.customCaloricIntake,
       species: pet.species,
       estimatedEnergyFactor: pet.estimatedEnergyFactor,
       numCachorros: pet.numCachorros,
@@ -60,6 +61,9 @@ export async function savePetProfile(pet: PetData) {
       isIdealWeight: pet.isIdealWeight,
       idealWeight: pet.idealWeight,
       hasBlackFurr: pet.hasBlackFurr,
+      protein: pet.protein,
+      fat: pet.fat,
+      carbs: pet.carbs,
       otherNotes: pet.otherNotes,
     }
 

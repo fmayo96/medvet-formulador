@@ -5,7 +5,7 @@ import Title from './Title'
 const CreateProfile = () => {
   return (
     <Page>
-      <Title content="Crear Perfil" />
+      <Title content="Crear perfil" />
       <PetForm />
     </Page>
   )

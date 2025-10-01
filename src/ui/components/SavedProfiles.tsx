@@ -34,7 +34,7 @@ const SavedProfiles = () => {
 
   return (
     <Page>
-      <Title content="Perfiles Guardados" />
+      <Title content="Perfiles guardados" />
       <div className="flex align-middle gap-4 my-8">
         <Search
           value={search}
@@ -42,7 +42,7 @@ const SavedProfiles = () => {
           onChange={handleSearch}
         />
         <Button type="dark" onClick={handleCreateProfile}>
-          Crear Perfil
+          Crear perfil
         </Button>
       </div>
       <CardsGrid pets={filteredPets} />

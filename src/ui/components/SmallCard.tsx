@@ -1,8 +1,9 @@
 import { useContext } from 'react'
 import { PageContext, Routes } from '../store'
 const reCachorro = /Cachorro/
+
 interface CardProps {
-  pet: PetInfo
+  pet: PetDTO
 }
 
 const SmallCard = ({ pet }: CardProps) => {
@@ -20,14 +21,14 @@ const SmallCard = ({ pet }: CardProps) => {
       onClick={handleClick}
     >
       <div className="flex flex-col w-full">
-        <div className='flex justify-between'>
-          <p className="text-xl font-semibold">{pet.name}</p>
-          <p className="text-lg">{pet.species}</p>
+        <div className="flex justify-between">
+          <p className="text-lg font-semibold">{pet.name}</p>
+          <p className="text-md">{pet.species}</p>
         </div>
-        <p className="text-lg">
+        <p className="text-md">
           Edad: {pet.age} {reCachorro.test(pet.species) ? 'meses' : 'años'}
         </p>
-        <p className="text-lg">Peso: {pet.weight} kg</p>
+        <p className="text-md">Peso: {pet.weight} kg</p>
       </div>
     </div>
   )

@@ -65,8 +65,9 @@ interface PetDTO {
   estimatedEnergyFactor: number
   isIdealWeight: boolean
   idealWeight: number
-  useRecommendedCaloricIntake: boolean // true for calculated value
   recommendedCaloricIntake: number
-  customCaloricIntake: number
+  protein: number
+  fat: number
+  carbs: number
   otherNotes: string
 }
