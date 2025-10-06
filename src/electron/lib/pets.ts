@@ -27,6 +27,7 @@ export async function savePetProfile(pet: PetData) {
       hasBlackFurr: pet.hasBlackFurr,
       protein: pet.protein,
       fat: pet.fat,
+      fiber: pet.fiber,
       carbs: pet.carbs,
       otherNotes: pet.otherNotes,
     }
@@ -63,6 +64,7 @@ export async function savePetProfile(pet: PetData) {
       hasBlackFurr: pet.hasBlackFurr,
       protein: pet.protein,
       fat: pet.fat,
+      fiber: pet.fiber,
       carbs: pet.carbs,
       otherNotes: pet.otherNotes,
     }

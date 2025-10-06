@@ -1,3 +1,4 @@
+import { sql } from 'drizzle-orm'
 import { int, real, sqliteTable, text } from 'drizzle-orm/sqlite-core'
 
 export const petsTable = sqliteTable('pets_table', {
@@ -20,5 +21,15 @@ export const petsTable = sqliteTable('pets_table', {
   protein: int().notNull(),
   fat: int().notNull(),
   carbs: int().notNull(),
+  fiber: int().notNull(),
   otherNotes: text(),
+})
+
+export const recipesTable = sqliteTable('recipes_table', {
+  id: int().primaryKey({ autoIncrement: true }),
+  petName: text('pet_name'),
+  ingredients: text('ingredients', { mode: 'json' }).$type<Food[]>(),
+  date: text('date')
+    .notNull()
+    .default(sql`(current_timestamp)`),
 })

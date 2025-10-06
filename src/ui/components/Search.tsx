@@ -1,10 +1,10 @@
-import type { ChangeEvent } from "react";
-import searchLogo from "../assets/search.png";
+import type { ChangeEvent } from 'react'
+import searchLogo from '../assets/search.png'
 
 interface Props {
-  value: string;
-  placeholder: string;
-  onChange: (event: ChangeEvent<HTMLInputElement>) => void;
+  value: string
+  placeholder: string
+  onChange: (event: ChangeEvent<HTMLInputElement>) => void
 }
 
 export default function Search({ value, placeholder, onChange }: Props) {
@@ -19,5 +19,5 @@ export default function Search({ value, placeholder, onChange }: Props) {
         className="px-2 focus:outline-none"
       />
     </div>
-  );
+  )
 }

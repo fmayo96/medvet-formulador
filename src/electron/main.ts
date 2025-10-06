@@ -5,6 +5,7 @@ import 'dotenv/config'
 import { drizzle } from 'drizzle-orm/libsql'
 import { getAllPets, getPetById, savePetProfile } from './lib/pets.js'
 import { createClient } from '@libsql/client'
+import { getAllRecipes, getRecipesByPetName, saveRecipe } from './lib/recipes.js'
 
 const client = createClient({
   url: process.env.DB_FILE_NAME!,
@@ -22,7 +23,7 @@ app.on('ready', () => {
     width: 1600,
     height: 900,
   })
-  Menu.setApplicationMenu(null)
+  //Menu.setApplicationMenu(null)
 
   if (isDev()) {
     mainWindow.loadURL('http://localhost:5123')
@@ -33,4 +34,7 @@ app.on('ready', () => {
   ipcMainHandle('pickPhoto', pickPhoto)
   ipcMainHandle('getAllPets', getAllPets)
   ipcMainHandle('getPetById', getPetById)
+  ipcMainHandle('saveRecipe', saveRecipe)
+  ipcMainHandle('getRecipesByPetName', getRecipesByPetName)
+  ipcMainHandle('getAllRecipes', getAllRecipes)
 })

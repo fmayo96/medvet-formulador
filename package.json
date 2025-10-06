@@ -17,11 +17,14 @@
   "dependencies": {
     "@libsql/client": "^0.15.11",
     "@tailwindcss/vite": "^4.1.11",
+    "chart.js": "^4.5.0",
+    "chartjs-plugin-datalabels": "^2.2.0",
     "dotenv": "^17.2.1",
     "drizzle-orm": "^0.44.4",
     "lucide-react": "^0.539.0",
     "os-utils": "^0.0.14",
     "react": "^19.1.0",
+    "react-chartjs-2": "^5.3.0",
     "react-dom": "^19.1.0",
     "slugify": "^1.6.6",
     "tailwindcss": "^4.1.11"

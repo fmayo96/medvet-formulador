@@ -11,6 +11,7 @@ const rePerro = /Perr/
 
 const PetProfile = ({ petId }: Props) => {
   const [pet, setPet] = useState<PetDTO | null>()
+  const [recipes, setRecipes] = useState<RecipeDTO[]>()
 
   async function getPetById(id: number | undefined) {
     if (id === undefined) return
@@ -19,6 +20,15 @@ const PetProfile = ({ petId }: Props) => {
       setPet(null)
     }
     setPet(fetchedPet[0])
+    const fetchedRecipes = await getRecipes(fetchedPet[0].name)
+    setRecipes(fetchedRecipes)
+  }
+
+  async function getRecipes(name: string) {
+    console.log(name)
+    const recipes = await window.electron.getAllRecipes()
+    console.log(recipes)
+    return recipes
   }
 
   useEffect(() => {
@@ -44,6 +54,9 @@ const PetProfile = ({ petId }: Props) => {
       <p>
         Weight: {pet?.weight}, Metabolic Weight: {pet?.metabolicWeight}
       </p>
+      {
+        recipes && recipes[0].ingredients.map(i => <p>{i.name} {i.amount} {i.unidad}</p>)
+      }
     </Page>
   )
 }

@@ -1,32 +1,62 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useContext } from 'react'
+import { PageContext, Routes } from '../store'
+
 import type { ChangeEvent } from 'react'
 import Page from './Page'
 import Title from './Title'
 import Select from './Select'
+import Button from './Button'
+import FoodSelector from './FoodSelector'
 import { STANDARDS } from '../data/standards_es'
 import { FOOD_DB } from '../data/food_db'
 import { MACROS } from '../data/macros'
 import SmallCard from './SmallCard'
+import Ingredient from './Ingredient'
+import PieChart from './PieChart'
+import MacrosTable from './MacrosTable'
+import {
+  calculateDMPercentage,
+  calculateCaloriesPercentage,
+  calculateTotal,
+  calculateRequirements,
+} from '../lib'
 
-interface Food {
-  name: string // --> name of the food
-  amount: number // --> amount in grams
+const EXAMPLE_DATA = {
+  labels: ['Proteína', 'Grasa', 'Carbohidratos'],
+  datasets: [
+    {
+      data: [100, 0, 0],
+      backgroundColor: ['#6B9DA6', '#75578F', '#E9FFB1'],
+    },
+  ],
 }
 
-interface Recipe {
-  petName: string
-  ingredients: Food[]
-  date: Date
+const EXAMPLE_DATA_DM = {
+  labels: ['Proteína', 'Grasa', 'Carbohidratos', 'Fibra', 'Ceniza'],
+  datasets: [
+    {
+      data: [100, 0, 0, 0, 0],
+      backgroundColor: ['#6B9DA6', '#75578F', '#E9FFB1', '#BFA8D4', '#A7D7DD'],
+    },
+  ],
 }
 
-type STANDARD_ENTRIES = keyof (typeof STANDARDS.recomendado)['Perro Adulto']
-
-const INIT_TOTAL = Object.fromEntries(
-  Object.keys(STANDARDS.recomendado['Perro Adulto']).map((k) => [k, 0])
-)
+export const INIT_TOTAL = Object.fromEntries(MACROS.map((m) => [m.nombre, 0]))
+export type Total = typeof INIT_TOTAL
 
 let REQUIREMENTS = Object.fromEntries(
   Object.keys(STANDARDS.recomendado['Perro Adulto']).map((k) => [k, 0])
+)
+
+export type Requirements = typeof REQUIREMENTS
+
+const FOODS: Food[] = FOOD_DB.map(
+  (f) =>
+    ({
+      name: f['Nombre'],
+      amount: 0,
+      unidad: f['Tamaño Porción'] === 100 ? 'g' : f['Tamaño Porción'],
+    } as Food)
 )
 
 const CreateRecipe = () => {
@@ -38,32 +68,20 @@ const CreateRecipe = () => {
     date: new Date(),
   })
   const [total, setTotal] = useState(INIT_TOTAL)
+  const [addFood, setAddFood] = useState(false)
+  const [caloriesPercentagesData, setCaloriesPercentagesData] =
+    useState(EXAMPLE_DATA)
+  const [DMPercentagesData, setDMPercentagesData] = useState(EXAMPLE_DATA_DM)
 
-  function calculateRequirements(selectedPet: PetDTO) {
-    for (let key in STANDARDS.recomendado[selectedPet.species]) {
-      let req =
-        STANDARDS.recomendado[selectedPet.species][key as STANDARD_ENTRIES]
-          .cantidad
+  const { changeRoute, changePetId } = useContext(PageContext)
 
-      if (req !== null) {
-        if (
-          STANDARDS.recomendado[selectedPet.species][key as STANDARD_ENTRIES]
-            .unidad !== null
-        ) {
-          REQUIREMENTS[key as STANDARD_ENTRIES] =
-            req * selectedPet.metabolicWeight
-        } else {
-          REQUIREMENTS[key as STANDARD_ENTRIES] = req
-        }
-      }
-    }
-  }
+  const handleSetAddFood = () => setAddFood((prev) => !prev)
 
   async function getPets() {
     const allPets = await window.electron.getAllPets()
     setPets(allPets)
     if (allPets.length > 0) setSelectedPet(allPets[0])
-    calculateRequirements(allPets[0])
+    REQUIREMENTS = calculateRequirements(allPets[0], total)
   }
 
   function handleSelect(e: ChangeEvent<HTMLSelectElement>) {
@@ -75,11 +93,116 @@ const CreateRecipe = () => {
     const selectedPet = pets?.find((p) => p.name === value)
     if (selectedPet) {
       setSelectedPet(selectedPet)
-      calculateRequirements(selectedPet)
-      //@ts-expect-error
-      REQUIREMENTS['Carbohidratos, por diferencia'] =
-        (selectedPet.recommendedCaloricIntake * selectedPet.carbs) / 400.0
+      REQUIREMENTS = calculateRequirements(selectedPet, total)
     }
+  }
+
+  function handleAddFood(food: Food) {
+    const newRecipe = { ...recipe, ingredients: [...recipe.ingredients, food] }
+    setRecipe(newRecipe)
+    const newTotal = calculateTotal(newRecipe)
+    setTotal(newTotal)
+    REQUIREMENTS = calculateRequirements(selectedPet!, newTotal)
+    setCaloriesPercentagesData((prev) => ({
+      ...prev,
+      datasets: [
+        {
+          data: calculateCaloriesPercentage(newTotal),
+          backgroundColor: ['#6B9DA6', '#75578F', '#E9FFB1'],
+        },
+      ],
+    }))
+    setDMPercentagesData((prev) => ({
+      ...prev,
+      datasets: [
+        {
+          data: calculateDMPercentage(newTotal),
+          backgroundColor: [
+            '#6B9DA6',
+            '#75578F',
+            '#E9FFB1',
+            '#BFA8D4',
+            '#A7D7DD',
+          ],
+        },
+      ],
+    }))
+  }
+
+  function handleDelete(name: string) {
+    const newRecipe = {
+      ...recipe,
+      ingredients: recipe.ingredients.filter((i) => i.name !== name),
+    }
+    setRecipe(newRecipe)
+    const newTotal = calculateTotal(newRecipe)
+    setTotal(newTotal)
+    REQUIREMENTS = calculateRequirements(selectedPet!, newTotal)
+    setCaloriesPercentagesData((prev) => ({
+      ...prev,
+      datasets: [
+        {
+          data: calculateCaloriesPercentage(newTotal),
+          backgroundColor: ['#6B9DA6', '#75578F', '#E9FFB1'],
+        },
+      ],
+    }))
+    setDMPercentagesData((prev) => ({
+      ...prev,
+      datasets: [
+        {
+          data: calculateDMPercentage(newTotal),
+          backgroundColor: [
+            '#6B9DA6',
+            '#75578F',
+            '#E9FFB1',
+            '#BFA8D4',
+            '#A7D7DD',
+          ],
+        },
+      ],
+    }))
+  }
+
+  function handleAmountChange(name: string, amount: number) {
+    const newIngredients = [...recipe.ingredients]
+    const idx = newIngredients.findIndex((i) => i.name === name)
+    newIngredients[idx].amount = amount
+    const newRecipe = { ...recipe, ingredients: newIngredients }
+    setRecipe(newRecipe)
+    const newTotal = calculateTotal(newRecipe)
+    setCaloriesPercentagesData((prev) => ({
+      ...prev,
+      datasets: [
+        {
+          data: calculateCaloriesPercentage(newTotal),
+          backgroundColor: ['#6B9DA6', '#75578F', '#E9FFB1'],
+        },
+      ],
+    }))
+    setDMPercentagesData((prev) => ({
+      ...prev,
+      datasets: [
+        {
+          data: calculateDMPercentage(newTotal),
+          backgroundColor: [
+            '#6B9DA6',
+            '#75578F',
+            '#E9FFB1',
+            '#BFA8D4',
+            '#A7D7DD',
+          ],
+        },
+      ],
+    }))
+    REQUIREMENTS = calculateRequirements(selectedPet!, newTotal)
+    setTotal(newTotal)
+  }
+
+  async function handleSave() {
+    await window.electron.saveRecipe(recipe)
+    if (changePetId) changePetId(selectedPet!.id)
+    if (changeRoute) changeRoute(Routes.PET_PROFILE)
   }
 
   useEffect(() => {
@@ -89,8 +212,8 @@ const CreateRecipe = () => {
   return (
     <Page>
       <Title content="Crear receta" />
-      <div className="grid grid-cols-[1fr_2fr] gap-8 w-full h-screen">
-        <div className="flex flex-col items-center my-4 gap-4">
+      <div className="grid grid-cols-[2fr_3fr] gap-8 w-full">
+        <div className="flex flex-col h-[80vh] border-r-2 border-slate-200 pr-4 items-center my-4 gap-4 overflow-y-auto">
           <div className="flex flex-col gap-2">
             <Select
               label="Nombre del animal"
@@ -100,59 +223,55 @@ const CreateRecipe = () => {
               className="overflow-y-auto"
             >
               {pets?.map((p) => (
-                <option>{p.name}</option>
+                <option key={p.name}>{p.name}</option>
               ))}
             </Select>
             {selectedPet && <SmallCard pet={selectedPet} />}
           </div>
-          <select
-            name="food"
-            id="food"
-            className="w-full bg-white border-1 border-slate-800 rounded-md py-1"
-          >
-            {FOOD_DB.map((f) => (
-              <option className="w-12">{f['Item Name']}</option>
-            ))}
-          </select>
-        </div>
-
-        <div
-          className="overflow-y-auto border-l-2 border-slate-200 px-4 flex justify-center mb-32"
-          //style={{ scrollbarWidth: 'none' }}
-          style={{ scrollbarColor: 'red' }}
-        >
-          {selectedPet && (
-            <table className="w-full table-auto my-4 mx-4 h-full">
-              <thead className="text-end">
-                <tr>
-                  <th className="text-start">Macros</th>
-                  <th>Objetivo</th>
-                  <th>Total</th>
-                  <th>% del Objetivo</th>
-                </tr>
-              </thead>
-              <tr className="text-end">
-                <td className="text-start">Energía kcal</td>
-                <td>{selectedPet.recommendedCaloricIntake} </td>
-                <td>0</td>
-                <td>0</td>
-              </tr>
-              {MACROS.map((m) => (
-                <tr className="text-end h-4">
-                  <td className={`text-start ${m.bold && 'font-bold'}`}>
-                    {m.mostrar ? m.mostrar : m.nombre} {m.unidad && m.unidad}
-                  </td>
-                  <td>
-                    {REQUIREMENTS[m.nombre]
-                      ? REQUIREMENTS[m.nombre].toFixed(2)
-                      : ' '}
-                  </td>
-                  <td>{m.nombre === ' ' ? ' ' : 0}</td>
-                  <td>{m.nombre === ' ' ? ' ' : 0}</td>
-                </tr>
-              ))}
-            </table>
+          {!addFood ? (
+            <div className="flex gap-4">
+              <Button type="dark" onClick={handleSetAddFood}>
+                + Alimento
+              </Button>
+              <Button type="light" onClick={handleSave}>
+                Guardar
+              </Button>
+            </div>
+          ) : (
+            <FoodSelector
+              foods={FOODS}
+              onAdd={handleAddFood}
+              onClose={handleSetAddFood}
+            />
           )}
+          <div className="flex flex-col items-start w-full">
+            {recipe.ingredients.length > 0 &&
+              recipe.ingredients.map((i, idx) => (
+                <Ingredient
+                  key={idx}
+                  name={i.name}
+                  amount={i.amount}
+                  unit={i.unidad}
+                  onDelete={handleDelete}
+                  onChange={handleAmountChange}
+                />
+              ))}
+          </div>
+        </div>
+        <div className="flex flex-col h-[84vh]">
+          <div className="overflow-y-auto border-b-2 border-slate-200 pb-1 px-4 flex justify-center mb-2">
+            {selectedPet && (
+              <MacrosTable
+                total={total}
+                REQUIREMENTS={REQUIREMENTS}
+                selectedPet={selectedPet}
+              />
+            )}
+          </div>
+          <div className="flex justify-evenly">
+            <PieChart title="Calorías" data={caloriesPercentagesData} />
+            <PieChart title="Materia Seca" data={DMPercentagesData} />
+          </div>
         </div>
       </div>
     </Page>

@@ -1,10 +1,13 @@
-import electron from 'electron'
+import electron, { ipcRenderer } from 'electron'
 
 electron.contextBridge.exposeInMainWorld('electron', {
   submit: (pet: PetData) => ipcInvoke('submit', pet),
   pickPhoto: () => electron.ipcRenderer.invoke('pickPhoto'),
   getAllPets: () => electron.ipcRenderer.invoke('getAllPets'),
   getPetById: (id: number) => ipcInvoke('getPetById', id),
+  saveRecipe: (recipe: Recipe) => ipcInvoke('saveRecipe', recipe),
+  getRecipesByPetName: (name: string) => ipcInvoke('getRecipesByPetName', name),
+  getAllRecipes: () => ipcRenderer.invoke('getAllRecipes'),
 } satisfies Window['electron'])
 
 function ipcInvoke<Key extends keyof EventPayloadMapping, Arg>(

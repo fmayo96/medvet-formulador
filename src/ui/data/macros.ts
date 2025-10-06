@@ -1,4 +1,5 @@
 export const MACROS = [
+  { nombre: 'Energía', unidad: 'kcal' },
   { nombre: 'Tamaño porción', unidad: 'g' },
   { nombre: 'Agua', unidad: 'g' },
   { nombre: 'Materia seca', unidad: 'g' },
@@ -18,10 +19,9 @@ export const MACROS = [
   { nombre: 'Valina', unidad: 'g' },
   { nombre: 'Arginina', unidad: 'g' },
   { nombre: 'Histidina', unidad: 'g' },
-  { nombre: 'Alanina', unidad: 'g' },
   { nombre: 'Taurina', unidad: 'mg' },
   { nombre: ' ', unidad: null },
-  { nombre: 'Lípidos totales (grasa)', unidad: 'g', bold: true },
+  { nombre: 'Lípidos totales (grasas)', unidad: 'g', bold: true },
   { nombre: '18:2 n-6 c,c', unidad: 'g', mostrar: 'Ácido linoleico' },
   { nombre: '18:3 n-3 c,c,c (ALA)', unidad: 'g', mostrar: 'Ácido α-linoleico' },
   { nombre: '20:4 n-6', unidad: 'g', mostrar: 'Ácido araquidónico' },

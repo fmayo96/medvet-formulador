@@ -5,7 +5,7 @@ import catImg from '../assets/cat_default.jpg'
 const reCachorro = /Cachorro/
 const rePerro = /Perr/
 interface CardProps {
-  pet: PetInfo
+  pet: PetDTO
 }
 
 const Card = ({ pet }: CardProps) => {
@@ -23,26 +23,25 @@ const Card = ({ pet }: CardProps) => {
       onClick={handleClick}
     >
       <div className="w-25 h-25 overflow-hidden rounded-full">
-        {pet.imgPath ?
+        {pet.imgPath ? (
           <img
             src={`file://${pet.imgPath}`}
             alt="pet image"
             className="w-full h-full object-cover"
-          /> : (
-
-            rePerro.test(pet.species) ? <img
-              src={dogImg}
-              alt="default dog image"
-              className="w-full h-full object-cover"
-            /> :
-              <img
-                src={catImg}
-                alt="default cat image"
-
-                className="w-full h-full object-cover"
-              />
-
-          )}
+          />
+        ) : rePerro.test(pet.species) ? (
+          <img
+            src={dogImg}
+            alt="default dog image"
+            className="w-full h-full object-cover"
+          />
+        ) : (
+          <img
+            src={catImg}
+            alt="default cat image"
+            className="w-full h-full object-cover"
+          />
+        )}
       </div>
       <div className="flex flex-col">
         <p className="text-xl font-semibold">{pet.name}</p>

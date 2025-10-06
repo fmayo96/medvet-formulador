@@ -4,6 +4,9 @@ interface Window {
     pickPhoto: () => Promise<string | null>
     getAllPets: () => Promise<PetDTO[]>
     getPetById: (id: number) => Promise<PetDTO[]>
+    saveRecipe: (recipe: Recipe) => Promise<void>
+    getRecipesByPetName: (name: string) => Promise<RecipeDTO[]>
+    getAllRecipes: () => Promise<RecipeDTO[]>
   }
 }
 
@@ -12,6 +15,9 @@ type EventPayloadMapping = {
   pickPhoto: string | null
   getAllPets: PetDTO[]
   getPetById: PetDTO[]
+  saveRecipe: void
+  getRecipesByPetName: RecipeDTO[]
+  getAllRecipes: RecipeDTO[]
 }
 
 type Species =
@@ -69,5 +75,25 @@ interface PetDTO {
   protein: number
   fat: number
   carbs: number
+  fiber: number
   otherNotes: string
+}
+
+interface Food {
+  name: string // --> name of the food
+  amount: number
+  unidad: string
+}
+
+interface Recipe {
+  petName: string
+  ingredients: Food[]
+  date: Date
+}
+
+interface RecipeDTO {
+  id: number
+  petName: string
+  ingredients: Food[]
+  date: string
 }
