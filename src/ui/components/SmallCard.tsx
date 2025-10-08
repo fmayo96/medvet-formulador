@@ -17,7 +17,7 @@ const SmallCard = ({ pet }: CardProps) => {
   return (
     <div
       key={pet.id}
-      className="flex gap-8 w-80  rounded-sm p-4 shadow-slate-300 hover:shadow-slate-500 shadow-sm hover:cursor-pointer mx-4"
+      className="flex gap-8 w-90  rounded-sm p-4 shadow-slate-300 hover:shadow-slate-500 shadow-sm hover:cursor-pointer mx-4"
       onClick={handleClick}
     >
       <div className="grid grid-cols-2 w-full">

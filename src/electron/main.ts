@@ -5,10 +5,28 @@ import 'dotenv/config'
 import { drizzle } from 'drizzle-orm/libsql'
 import { getAllPets, getPetById, savePetProfile } from './lib/pets.js'
 import { createClient } from '@libsql/client'
-import { getAllRecipes, getRecipesByPetName, saveRecipe } from './lib/recipes.js'
+import {
+  getAllRecipes,
+  getRecipesByPetName,
+  saveRecipe,
+} from './lib/recipes.js'
+import path from 'path'
+import fs from 'fs'
+import { pathToFileURL } from 'url'
+
+const userDataPath = app.getPath('userData')
+const dbPath = path.join(userDataPath, 'pets.db')
+
+const sourceDbPath = path.join(process.resourcesPath, 'pets.db')
+
+if (!fs.existsSync(dbPath)) {
+  fs.copyFileSync(sourceDbPath, dbPath)
+}
+
+const dbUrl = pathToFileURL(dbPath).href
 
 const client = createClient({
-  url: process.env.DB_FILE_NAME!,
+  url: dbUrl,
 })
 
 export const db = drizzle(client)
@@ -19,11 +37,12 @@ app.on('ready', () => {
     webPreferences: {
       preload: getPreloadPath(),
       webSecurity: false,
+      devTools: !app.isPackaged,
     },
     width: 1600,
     height: 900,
   })
-  //Menu.setApplicationMenu(null)
+  Menu.setApplicationMenu(null)
 
   if (isDev()) {
     mainWindow.loadURL('http://localhost:5123')

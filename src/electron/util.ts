@@ -19,6 +19,8 @@ export function ipcMainHandle<Key extends keyof EventPayloadMapping, Arg>(
   });
 }
 
+
+
 export function validateEventFrame(frame: WebFrameMain) {
   if (isDev() && new URL(frame.url).host === "localhost:5123") {
     return;

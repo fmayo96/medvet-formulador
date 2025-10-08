@@ -8,11 +8,11 @@ interface Props {
 
 const Button = ({ children, type, onClick }: Props) => {
   let cssClasses =
-    'border-2 w-30 h-fit p-2 rounded-md bg-sky-600 text-white hover:cursor-pointer hover:bg-sky-700 hover:text-sky-100'
+    'border-2 w-30 h-fit p-2 rounded-md bg-[#75578F] text-white hover:cursor-pointer hover:bg-[#75578F]/80 '
 
   if (type === 'light') {
     cssClasses =
-      'text-sky-700 border-2 w-30 p-2 rounded-md hover:bg-sky-100 hover:cursor-pointer hover:text-sky-600'
+      'bg-white  w-30 p-2 rounded-md text-[#75578F] border-2 border-[#75578F] hover:cursor-pointer hover:bg-[#BFA8D4]/10'
   }
 
   return (

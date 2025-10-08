@@ -295,7 +295,7 @@ const PetForm = () => {
             max={100}
             value={petData.protein}
             onChange={handleNumChange}
-            className="bg-transparent accent-sky-600"
+            className="bg-transparent accent-[#75578F]"
           />
           <div className="flex justify-between">
             <label className="text-lg">Grasa:</label>{' '}
@@ -319,7 +319,7 @@ const PetForm = () => {
             max={100}
             value={petData.fat}
             onChange={handleNumChange}
-            className="bg-transparent accent-sky-600"
+            className="bg-transparent accent-[#75578F]"
           />
           <div className="flex justify-between">
             <label className="text-lg">Carbohidratos:</label>{' '}
@@ -341,7 +341,7 @@ const PetForm = () => {
             max={100}
             value={petData.carbs}
             onChange={handleNumChange}
-            className="bg-transparent accent-sky-600"
+            className="bg-transparent accent-[#75578F]"
           />
           <div className="flex justify-between">
             <label className="text-lg">Fibra (%DMB):</label>{' '}
@@ -363,7 +363,7 @@ const PetForm = () => {
             max={100}
             value={petData.fiber}
             onChange={handleNumChange}
-            className="bg-transparent accent-sky-600"
+            className="bg-transparent accent-[#75578F]"
           />
 
           {macroError && (
@@ -374,7 +374,7 @@ const PetForm = () => {
         </div>
       </div>
       <div className="flex flex-col w-full gap-4">
-        <p className="font-semibold text-md">Otras notas:</p>
+        <p className="font-semibold text-md">Motivo de la Consulta:</p>
         <textarea
           className="border-1 border-slate-300 p-4 rounded-md resize-none focus:outline-none"
           name="otherNotes"

@@ -1,7 +1,7 @@
 import Card from "./Card";
 
 interface Props {
-  pets: PetInfo[] | undefined;
+  pets: PetDTO[] | undefined;
 }
 
 const CardsGrid = ({ pets }: Props) => {

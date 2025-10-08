@@ -41,7 +41,7 @@ const Input = ({ type, name, value, label, onChange }: InputProps) => {
           id={name}
           checked={value as boolean}
           onChange={onChange}
-          className="w-5 h-5 accent-sky-700"
+          className="w-5 h-5 accent-[#BFA8D4]"
         />
       )
       break

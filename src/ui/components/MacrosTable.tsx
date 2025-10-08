@@ -1,6 +1,9 @@
 import type { Total } from './CreateRecipe'
 import type { Requirements } from '../lib'
 import { MACROS } from '../data/macros'
+import { STANDARDS } from '../data/standards_es'
+
+type Nutrient = keyof Total
 
 interface Props {
   total: Total
@@ -9,6 +12,28 @@ interface Props {
 }
 
 const MacrosTable = ({ total, REQUIREMENTS, selectedPet }: Props) => {
+  const SUL = STANDARDS['safeUpperLimit'][selectedPet.species]
+
+  function percentageColor(nutrient: Nutrient) {
+    if (!(nutrient in SUL)) {
+      if (total[nutrient] > REQUIREMENTS[nutrient]) return 'text-green-600'
+      return ''
+    }
+    if (SUL[nutrient as keyof typeof SUL] === null) {
+      if (total[nutrient] > REQUIREMENTS[nutrient]) return 'text-green-600'
+      return ''
+    }
+    if (
+      total[nutrient] >
+      SUL[nutrient as keyof typeof SUL]! * selectedPet.metabolicWeight
+    )
+      return 'text-red-600'
+    if (total[nutrient] > REQUIREMENTS[nutrient]) return 'text-green-600'
+    return ''
+  }
+
+  console.log(SUL)
+
   return (
     <table className="w-full table-auto my-4 mx-4 h-full">
       <thead className="text-end">
@@ -42,13 +67,7 @@ const MacrosTable = ({ total, REQUIREMENTS, selectedPet }: Props) => {
                 : ' '}
             </td>
             <td>{m.nombre === ' ' ? ' ' : total[m.nombre].toFixed(2)}</td>
-            <td
-              className={
-                total[m.nombre] / REQUIREMENTS[m.nombre] >= 1
-                  ? 'text-green-600'
-                  : ''
-              }
-            >
+            <td className={percentageColor(m.nombre)}>
               {REQUIREMENTS[m.nombre]
                 ? `${Math.round(
                     (total[m.nombre] / REQUIREMENTS[m.nombre]) * 100

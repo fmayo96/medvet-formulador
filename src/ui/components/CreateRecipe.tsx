@@ -82,13 +82,14 @@ const CreateRecipe = () => {
     setPets(allPets)
     if (allPets.length > 0) setSelectedPet(allPets[0])
     REQUIREMENTS = calculateRequirements(allPets[0], total)
+    setRecipe((prev) => ({ ...prev, petName: allPets[0].name }))
   }
 
   function handleSelect(e: ChangeEvent<HTMLSelectElement>) {
-    const { name, value } = e.target
+    const { value } = e.target
     setRecipe((prevRecipe) => ({
       ...prevRecipe,
-      [name]: value,
+      petName: value,
     }))
     const selectedPet = pets?.find((p) => p.name === value)
     if (selectedPet) {
@@ -212,8 +213,8 @@ const CreateRecipe = () => {
   return (
     <Page>
       <Title content="Crear receta" />
-      <div className="grid grid-cols-[2fr_3fr] gap-8 w-full">
-        <div className="flex flex-col h-[80vh] border-r-2 border-slate-200 pr-4 items-center my-4 gap-4 overflow-y-auto">
+      <div className="flex flex-row gap-4 w-full">
+        <div className="flex-[3] flex flex-col w-full min-w-[400px] h-[80vh] border-r-2 border-slate-200  pr-8 items-center my-4 gap-4 overflow-y-auto">
           <div className="flex flex-col gap-2">
             <Select
               label="Nombre del animal"
@@ -258,7 +259,7 @@ const CreateRecipe = () => {
               ))}
           </div>
         </div>
-        <div className="flex flex-col h-[84vh]">
+        <div className="flex-[4] flex flex-col h-[84vh]">
           <div className="overflow-y-auto border-b-2 border-slate-200 pb-1 px-4 flex justify-center mb-2">
             {selectedPet && (
               <MacrosTable
@@ -268,7 +269,7 @@ const CreateRecipe = () => {
               />
             )}
           </div>
-          <div className="flex justify-evenly">
+          <div className="flex justify-evenly items-start">
             <PieChart title="Calorías" data={caloriesPercentagesData} />
             <PieChart title="Materia Seca" data={DMPercentagesData} />
           </div>

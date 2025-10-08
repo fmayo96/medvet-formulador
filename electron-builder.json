@@ -1,9 +1,19 @@
 {
   "appId": "com.francom96.electron-tutorial",
   "files": ["dist-electron", "dist-react"],
-  "extraResources": ["dist-electron/preload.cjs"],
+  "extraResources": [
+    "dist-electron/preload.cjs",
+    {
+      "from": "pets.db",
+      "to": "pets.db"
+    }
+  ],
+  "directories": {
+    "buildResources": "assets"
+  },
   "mac": {
-    "target": "dmg"
+    "target": ["zip"],
+    "icon": "assets/icon.icns"
   },
   "linux": {
     "target": "AppImage",
