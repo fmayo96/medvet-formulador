@@ -27,6 +27,10 @@ export function calculateTotal(recipe: Recipe): Total {
       newTotal['Fibra, total']
 
     newTotal['Materia seca ajustada'] = newTotal['Energía'] / 4.0
+    newTotal['EPA + DHA Total'] =
+      newTotal['20:5 n-3 (EPA)'] +
+      newTotal['22:6 n-3 (DHA)'] +
+      newTotal['EPA + DHA sin diferenciar']
   }
   return newTotal
 }

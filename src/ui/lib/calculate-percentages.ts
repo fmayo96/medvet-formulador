@@ -1,14 +1,17 @@
 import type { Total } from '../components/CreateRecipe'
+import { MACROS } from '../data/macros'
 
 export function calculateCaloriesPercentage(total: Total) {
-  const energy = total['Energía']
+  const carbs = total['Carbohidratos, por diferencia'] * 4
   const protein = total['Proteína'] * 4
   const fat = total['Lípidos totales (grasas)'] * 9
+
+  const energy = carbs + protein + fat
 
   const percentages = [
     (protein / energy) * 100,
     (fat / energy) * 100,
-    (1 - (fat + protein) / energy) * 100,
+    (carbs / energy) * 100,
   ]
 
   if (energy === 0) return [100, 0, 0]
@@ -33,5 +36,26 @@ export function calculateDMPercentage(total: Total) {
 
   if (DM === 0) return [100, 0, 0, 0, 0]
 
+  return percentages
+}
+
+export function calculateDMPercentageAll(total: Total) {
+  const percentages = { ...total }
+  const DM = total['Materia seca']
+  for (let i = 0; i < MACROS.length; i++) {
+    let key = MACROS[i].nombre
+    let unidad = MACROS[i].unidad
+
+    switch (unidad) {
+      case 'g':
+        percentages[key] = (total[key] / DM) * 100
+        break
+      case 'mg':
+        percentages[key] = (total[key] / (1000 * DM)) * 100
+        break
+      case 'µg':
+        percentages[key] = (total[key] / (1000 * 1000 * DM)) * 100
+    }
+  }
   return percentages
 }

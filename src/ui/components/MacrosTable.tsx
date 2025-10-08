@@ -1,5 +1,5 @@
 import type { Total } from './CreateRecipe'
-import type { Requirements } from '../lib'
+import { calculateDMPercentageAll, type Requirements } from '../lib'
 import { MACROS } from '../data/macros'
 import { STANDARDS } from '../data/standards_es'
 
@@ -11,8 +11,24 @@ interface Props {
   selectedPet: PetDTO
 }
 
+const NO_DM = [
+  'Energía',
+  'Tamaño porción',
+  'Agua',
+  'Materia seca',
+  'Materia seca ajustada',
+]
+
 const MacrosTable = ({ total, REQUIREMENTS, selectedPet }: Props) => {
   const SUL = STANDARDS['safeUpperLimit'][selectedPet.species]
+
+  let allDMPercentages = calculateDMPercentageAll(total)
+
+  function displayDMPercentage(nombre: string) {
+    if (NO_DM.includes(nombre)) return ''
+    if (Number.isNaN(allDMPercentages[nombre])) return ''
+    return `${allDMPercentages[nombre].toFixed(2)}%`
+  }
 
   function percentageColor(nutrient: Nutrient) {
     if (!(nutrient in SUL)) {
@@ -35,13 +51,14 @@ const MacrosTable = ({ total, REQUIREMENTS, selectedPet }: Props) => {
   console.log(SUL)
 
   return (
-    <table className="w-full table-auto my-4 mx-4 h-full">
+    <table className="w-full table-fixed  my-4  h-full">
       <thead className="text-end">
         <tr>
-          <th className="text-start">Macros</th>
-          <th>Objetivo</th>
-          <th>Total</th>
-          <th>% Objetivo</th>
+          <th className="text-start w-3/8">Macros</th>
+          <th className="w-1/8">Objetivo</th>
+          <th className="w-1/8">Total</th>
+          <th className="w-1/8">% DM</th>
+          <th className="w-2/8">% Objetivo</th>
         </tr>
       </thead>
       <tbody>
@@ -49,7 +66,14 @@ const MacrosTable = ({ total, REQUIREMENTS, selectedPet }: Props) => {
           <td className="text-start">Energía kcal</td>
           <td>{selectedPet.recommendedCaloricIntake} </td>
           <td>{total['Energía'].toFixed(2)}</td>
-          <td>
+          <td></td>
+          <td
+            className={
+              total['Energía'] > selectedPet.recommendedCaloricIntake
+                ? 'text-green-600'
+                : ''
+            }
+          >
             {Math.round(
               (total['Energía'] / selectedPet.recommendedCaloricIntake) * 100
             )}
@@ -67,6 +91,7 @@ const MacrosTable = ({ total, REQUIREMENTS, selectedPet }: Props) => {
                 : ' '}
             </td>
             <td>{m.nombre === ' ' ? ' ' : total[m.nombre].toFixed(2)}</td>
+            <td>{m.nombre === ' ' ? ' ' : displayDMPercentage(m.nombre)}</td>
             <td className={percentageColor(m.nombre)}>
               {REQUIREMENTS[m.nombre]
                 ? `${Math.round(

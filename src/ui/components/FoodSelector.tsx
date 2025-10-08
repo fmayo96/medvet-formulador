@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import type { ChangeEvent } from 'react'
 import Button from './Button'
+import { parseDecimal } from '../lib'
 
 interface props {
   foods: Food[]
@@ -11,6 +12,7 @@ interface props {
 const FoodSelector = ({ foods, onAdd, onClose }: props) => {
   const [search, setSearch] = useState('')
   const [food, setFood] = useState<Food>()
+  const [amount, setAmount] = useState('0')
 
   function handleSearch(event: ChangeEvent<HTMLInputElement>) {
     const newSearch = event.target.value
@@ -18,20 +20,23 @@ const FoodSelector = ({ foods, onAdd, onClose }: props) => {
   }
 
   function handleAmount(event: ChangeEvent<HTMLInputElement>) {
-    const newAmount = Number(event.target.value)
-    if (!Number.isNaN(newAmount)) {
-      setFood((prev) => {
-        if (prev) {
-          return { ...prev, amount: Number(newAmount) }
+    const newAmount = event.target.value
+    setAmount(newAmount)
+    const parsedAmount = parseDecimal(newAmount)
+    setFood((prev) => {
+      if (prev)
+        return {
+          ...prev,
+          amount: parsedAmount,
         }
-      })
-    }
+    })
   }
 
   function handleAgregar(f: Food | undefined) {
     if (!f) {
       onClose()
     }
+    if (Number.isNaN(f?.amount)) return
     onAdd(f!)
     onClose()
   }
@@ -60,12 +65,14 @@ const FoodSelector = ({ foods, onAdd, onClose }: props) => {
         </div>
         <div className="flex gap-2">
           <p>{food?.name ? food.name : ' '}</p>
-          <input
-            type="text"
-            value={food?.amount}
-            className="w-12 text-end outline-none"
-            onChange={(e) => handleAmount(e)}
-          />
+          {food && (
+            <input
+              type="text"
+              value={amount}
+              className="w-12 text-end outline-none"
+              onChange={(e) => handleAmount(e)}
+            />
+          )}
           <p>{food?.unidad ? food.unidad : ' '}</p>
         </div>
         <div className="flex justify-evenly mt-8">

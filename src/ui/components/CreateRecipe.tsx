@@ -214,14 +214,14 @@ const CreateRecipe = () => {
     <Page>
       <Title content="Crear receta" />
       <div className="flex flex-row gap-4 w-full">
-        <div className="flex-[3] flex flex-col w-full min-w-[400px] h-[80vh] border-r-2 border-slate-200  pr-8 items-center my-4 gap-4 overflow-y-auto">
-          <div className="flex flex-col gap-2">
+        <div className="flex-[2] flex flex-col w-full min-w-[400px] h-[80vh] border-r-2 border-slate-200  pr-8 items-center my-4 gap-4 overflow-y-auto">
+          <div className="flex flex-col items-center gap-2">
             <Select
               label="Nombre del animal"
               name="petName"
               value={recipe.petName}
               onChange={handleSelect}
-              className="overflow-y-auto"
+              className="overflow-y-auto w-full"
             >
               {pets?.map((p) => (
                 <option key={p.name}>{p.name}</option>
@@ -245,7 +245,7 @@ const CreateRecipe = () => {
               onClose={handleSetAddFood}
             />
           )}
-          <div className="flex flex-col items-start w-full">
+          <div className="flex flex-col items-center w-full">
             {recipe.ingredients.length > 0 &&
               recipe.ingredients.map((i, idx) => (
                 <Ingredient
@@ -259,8 +259,8 @@ const CreateRecipe = () => {
               ))}
           </div>
         </div>
-        <div className="flex-[4] flex flex-col h-[84vh]">
-          <div className="overflow-y-auto border-b-2 border-slate-200 pb-1 px-4 flex justify-center mb-2">
+        <div className="flex-[3] flex flex-col h-[84vh]">
+          <div className="overflow-y-auto border-b-2 border-slate-200 pb-1 px-2 flex justify-center mb-2">
             {selectedPet && (
               <MacrosTable
                 total={total}
