@@ -1,25 +1,25 @@
-import { useEffect, useState, useContext } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { PageContext, Routes } from '../store'
 
 import type { ChangeEvent } from 'react'
-import Page from './Page'
-import Title from './Title'
-import Select from './Select'
-import Button from './Button'
-import FoodSelector from './FoodSelector'
-import { STANDARDS } from '../data/standards_es'
 import { FOOD_DB } from '../data/food_db'
 import { MACROS } from '../data/macros'
-import SmallCard from './SmallCard'
-import Ingredient from './Ingredient'
-import PieChart from './PieChart'
-import MacrosTable from './MacrosTable'
+import { STANDARDS } from '../data/standards_es'
 import {
-  calculateDMPercentage,
   calculateCaloriesPercentage,
-  calculateTotal,
+  calculateDMPercentage,
   calculateRequirements,
+  calculateTotal,
 } from '../lib'
+import Button from './Button'
+import FoodSelector from './FoodSelector'
+import Ingredient from './Ingredient'
+import MacrosTable from './MacrosTable'
+import Page from './Page'
+import PieChart from './PieChart'
+import Select from './Select'
+import SmallCard from './SmallCard'
+import Title from './Title'
 
 const EXAMPLE_DATA = {
   labels: ['Proteína', 'Grasa', 'Carbohidratos'],
@@ -52,12 +52,13 @@ export type Requirements = typeof REQUIREMENTS
 
 const FOODS: Food[] = FOOD_DB.map(
   (f) =>
-    ({
-      name: f['Nombre'],
-      amount: 0,
-      unidad: f['Tamaño Porción'] === 100 ? 'g' : f['Tamaño Porción'],
-    } as Food)
+  ({
+    name: f['Nombre'],
+    amount: 0,
+    unidad: f['Tamaño Porción'] === 100 ? 'g' : f['Tamaño Porción'],
+  } as Food)
 )
+
 
 const CreateRecipe = () => {
   const [pets, setPets] = useState<PetDTO[]>()

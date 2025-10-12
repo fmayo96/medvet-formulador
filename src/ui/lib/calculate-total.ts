@@ -2,6 +2,8 @@ import type { Total } from '../components/CreateRecipe'
 import { INIT_TOTAL } from '../components/CreateRecipe'
 import { FOOD_DB } from '../data/food_db'
 import { MACROS } from '../data/macros'
+import { COOKED_STARCHS } from '../data/availability'
+import { OTHER_PLANTS } from '../data/availability'
 
 export function calculateTotal(recipe: Recipe): Total {
   const newTotal = { ...INIT_TOTAL }
@@ -9,14 +11,23 @@ export function calculateTotal(recipe: Recipe): Total {
     let food = FOOD_DB.find((f) => f['Nombre'] === r.name)
     if (!food) continue
     for (let macro of MACROS.filter((m) => m.nombre !== 'Tamaño Porción')) {
+      let availabilityFactor = 1.0
+      if (food['Tipo'] === 'Cooked Starches') {
+        availabilityFactor =
+          COOKED_STARCHS[macro.nombre as keyof typeof COOKED_STARCHS] ?? 1.0
+      } else if (food['Tipo'] === 'Other Plants') {
+        availabilityFactor =
+          OTHER_PLANTS[macro.nombre as keyof typeof OTHER_PLANTS] ?? 1.0
+      }
       // @ts-expect-error
       const nutrient = Number(food[macro.nombre])
       if (Number.isNaN(nutrient)) continue
       if (!Number.isNaN(Number(food['Tamaño Porción']))) {
         newTotal[macro.nombre] +=
-          (nutrient * r.amount) / Number(food['Tamaño Porción'])
+          (availabilityFactor * (nutrient * r.amount)) /
+          Number(food['Tamaño Porción'])
       } else {
-        newTotal[macro.nombre] += nutrient * r.amount
+        newTotal[macro.nombre] += availabilityFactor * nutrient * r.amount
       }
     }
     newTotal['Materia seca'] =
