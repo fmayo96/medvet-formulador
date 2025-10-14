@@ -6,29 +6,36 @@ import { drizzle } from 'drizzle-orm/libsql'
 import { getAllPets, getPetById, savePetProfile } from './lib/pets.js'
 import { createClient } from '@libsql/client'
 import {
+  deleteRecipeById,
   getAllRecipes,
+  getRecipeById,
   getRecipesByPetName,
   saveRecipe,
+  updateRecipe,
 } from './lib/recipes.js'
 import path from 'path'
 import fs from 'fs'
 import { pathToFileURL } from 'url'
 
-const userDataPath = app.getPath('userData')
-const dbPath = path.join(userDataPath, 'pets.db')
+let dbUrl = ''
 
-const sourceDbPath = path.join(process.resourcesPath, 'pets.db')
+if (isDev()) {
+  dbUrl = process.env.DB_FILE_NAME!
+} else {
+  const userDataPath = app.getPath('userData')
+  const dbPath = path.join(userDataPath, 'pets.db')
 
-if (!fs.existsSync(dbPath)) {
-  fs.copyFileSync(sourceDbPath, dbPath)
+  const sourceDbPath = path.join(process.resourcesPath, 'pets.db')
+
+  if (!fs.existsSync(dbPath)) {
+    fs.copyFileSync(sourceDbPath, dbPath)
+  }
+
+  dbUrl = pathToFileURL(dbPath).href
 }
-
-const dbUrl = pathToFileURL(dbPath).href
-
 const client = createClient({
   url: dbUrl,
 })
-
 export const db = drizzle(client)
 
 app.on('ready', () => {
@@ -42,7 +49,7 @@ app.on('ready', () => {
     width: 1600,
     height: 900,
   })
-  Menu.setApplicationMenu(null)
+  if (!isDev()) Menu.setApplicationMenu(null)
 
   if (isDev()) {
     mainWindow.loadURL('http://localhost:5123')
@@ -56,4 +63,7 @@ app.on('ready', () => {
   ipcMainHandle('saveRecipe', saveRecipe)
   ipcMainHandle('getRecipesByPetName', getRecipesByPetName)
   ipcMainHandle('getAllRecipes', getAllRecipes)
+  ipcMainHandle('updateRecipe', updateRecipe)
+  ipcMainHandle('getRecipeById', getRecipeById)
+  ipcMainHandle('deleteRecipeById', deleteRecipeById)
 })

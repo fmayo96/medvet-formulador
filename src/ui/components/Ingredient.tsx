@@ -22,7 +22,7 @@ const Ingredient = ({ name, amount, unit, onDelete, onChange }: props) => {
   }
 
   return (
-    <div className="flex gap-6 mt-2 text-start text-lg shadow rounded-md p-2">
+    <div className="flex gap-6 mt-2 text-start w-90 justify-between text-lg shadow rounded-md p-2">
       <div className="flex gap-2 items-start">
         <p className="flex flex-wrap">{name}:</p>
         <input

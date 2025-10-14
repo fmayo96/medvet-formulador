@@ -7,6 +7,15 @@ interface Window {
     saveRecipe: (recipe: Recipe) => Promise<void>
     getRecipesByPetName: (name: string) => Promise<RecipeDTO[]>
     getAllRecipes: () => Promise<RecipeDTO[]>
+    updateRecipe: ({
+      id,
+      ingredients,
+    }: {
+      id: number
+      ingredients: Food[]
+    }) => void
+    getRecipeById: (id: number) => Promise<RecipeDTO>
+    deleteRecipeById: (id: number) => Promise<void>
   }
 }
 
@@ -18,6 +27,9 @@ type EventPayloadMapping = {
   saveRecipe: void
   getRecipesByPetName: RecipeDTO[]
   getAllRecipes: RecipeDTO[]
+  updateRecipe: void
+  getRecipeById: RecipeDTO
+  deleteRecipeById: void
 }
 
 type Species =

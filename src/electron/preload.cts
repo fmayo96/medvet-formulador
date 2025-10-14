@@ -8,6 +8,10 @@ electron.contextBridge.exposeInMainWorld('electron', {
   saveRecipe: (recipe: Recipe) => ipcInvoke('saveRecipe', recipe),
   getRecipesByPetName: (name: string) => ipcInvoke('getRecipesByPetName', name),
   getAllRecipes: () => ipcRenderer.invoke('getAllRecipes'),
+  updateRecipe: ({ id, ingredients }: { id: number; ingredients: Food[] }) =>
+    ipcInvoke('updateRecipe', { id: id, ingredients: ingredients }),
+  getRecipeById: (id: number) => ipcInvoke('getRecipeById', id),
+  deleteRecipeById: (id: number) => ipcInvoke('deleteRecipeById', id),
 } satisfies Window['electron'])
 
 function ipcInvoke<Key extends keyof EventPayloadMapping, Arg>(
